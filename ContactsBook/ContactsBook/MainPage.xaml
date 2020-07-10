@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:ContactsBook.Cells"
+             mc:Ignorable="d"
+             x:Class="ContactsBook.MainPage">
+
+    <AbsoluteLayout BackgroundColor="Black">
+        <BoxView 
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 0, 1, 0.1"
+            BackgroundColor="SlateGray">
+        </BoxView>
+        <Label
+            HorizontalOptions="Center"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 0.025, 1, 0.1"
+            TextColor="White"
+            FontSize="30"
+            Text="Contacts">
+        </Label>
+        
+        <BoxView
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 1, 1, 0.9"
+            BackgroundColor="Black">
+        </BoxView>
+        <ListView
+            HorizontalOptions="Center"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 1, 1, 0.9"
+            HasUnevenRows="True"
+            SeparatorColor="White"
+            x:Name="mainListView"
+            ItemsSource="{Binding ListOfContacts}"
+            IsGroupingEnabled="True"
+            ItemSelected="OnContactClicked"
+            IsPullToRefreshEnabled="True"
+            RefreshCommand="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+            <ListView.GroupHeaderTemplate>
+            <DataTemplate>
+                    <ViewCell>
+                        <Label 
+                            HorizontalOptions="Center"
+                            TextColor="White"
+                            TextDecorations="Underline"
+                            FontSize="25"
+                            Text="{Binding FirstLetter}">
+                        </Label>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <local:ContactViewCell
+                        SelectedItemBackgroundColor="SlateGray">
+                        <StackLayout 
+                            HorizontalOptions="Center"
+                            Padding="0, 10, 0, 10">
+                            <Label 
+                                HorizontalOptions="Center"
+                                TextColor="White"
+                                FontSize="17"
+                                Text="{Binding FullName, StringFormat='NAME: {0}'}">
+                            </Label>
+                            <Label 
+                                HorizontalOptions="Center"
+                                TextColor="White"
+                                FontSize="17"
+                                Text="{Binding PhoneNumber, StringFormat='NUMBER: {0}'}">
+                            </Label>
+                        </StackLayout>
+                    </local:ContactViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </AbsoluteLayout>
+</ContentPage>

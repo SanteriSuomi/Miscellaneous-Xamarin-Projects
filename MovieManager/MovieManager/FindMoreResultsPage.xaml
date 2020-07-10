@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="MovieManager.FindMoreResultsPage">
+    
+    <ContentPage.Content>
+        <StackLayout
+            BackgroundColor="DimGray">
+            <SearchBar
+                HeightRequest="50"
+                BackgroundColor="FloralWhite"
+                SearchButtonPressed="OnSearchButtonPressed"
+                x:Name="itemSearchBar">
+            </SearchBar>
+            <ListView
+                Margin="0, -5, 0, 0"
+                HasUnevenRows="True"
+                ItemSelected="OnResultsListItemSelected"
+                x:Name="resultsListView">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell
+                            Height="140">
+                            <StackLayout
+                                Orientation="Horizontal"
+                                BackgroundColor="Black"
+                                Spacing="20">
+                                <Image
+                                    WidthRequest="130"
+                                    BackgroundColor="White"
+                                    Aspect="AspectFill"
+                                    Source="{Binding Poster}">
+                                </Image>
+                                <Label
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    FontSize="22.75"
+                                    TextColor="White"
+                                    Text="{Binding Title}">
+                                </Label>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

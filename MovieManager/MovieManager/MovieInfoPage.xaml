@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             mc:Ignorable="d"
+             x:Class="MovieManager.MovieInfoPage">
+    
+  <ContentPage.Content>
+      <AbsoluteLayout
+          BackgroundColor="DimGray">
+            <controls:CircleImage
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="0.5, 0.02, 0.7, 0.34"
+                Aspect="AspectFill"
+                FillColor="White"
+                BorderColor="Black"
+                BorderThickness="8"
+                x:Name="movieImage">
+            </controls:CircleImage>
+            <Label
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="0.5, 0.75, 0.775, 0.5"
+                HorizontalOptions="Center"
+                FontSize="25"
+                TextColor="White"
+                Text="Dark"
+                x:Name="movieTitle">
+            </Label>
+            <Label
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="0.5, 0.85, 0.5, 0.5"
+                HorizontalOptions="Center"
+                FontSize="25"
+                TextColor="Gold"
+                Text="5 out of 10"
+                x:Name="movieRating">
+            </Label>
+            <ScrollView
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="0.5, 0.975, 0.775, 0.5">
+                <Label
+                    HorizontalOptions="Center"
+                    FontSize="17.5"
+                    TextColor="White"
+                    Text="This is a movie about movies."
+                    x:Name="movieDescription">
+                </Label>
+            </ScrollView>
+      </AbsoluteLayout>
+  </ContentPage.Content>
+</ContentPage>

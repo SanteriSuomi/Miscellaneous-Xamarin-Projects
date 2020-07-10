@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="MovieManager.MainPage"
+             NavigationPage.HasBackButton="False">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Priority="0"
+            Order="Primary"
+            Text="Find More"
+            Clicked="OnFindMoreClicked">
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <AbsoluteLayout
+        BackgroundColor="DimGray">
+        <BoxView
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 0, 1, 0.135"
+            BackgroundColor="#bf2015"
+            HeightRequest="100">
+        </BoxView>
+        <Label
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 0.028, 1, 0.135"
+            HorizontalOptions="Center"
+            TextColor="#292929"
+            FontSize="45"
+            Text="Movie Manager">
+        </Label>
+        <SearchBar
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 0.15, 1, 0.07"
+            BackgroundColor="FloralWhite"
+            Margin="0, -5, 0, 0"
+            Placeholder="Search Saved Movies"
+            TextColor="Black"
+            FontSize="25"
+            TextChanged="OnSavedSearchTextChanged"
+            x:Name="savedItemsSearchBar">
+        </SearchBar>
+        <BoxView
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 0.215, 1, 0.05"
+            BackgroundColor="#bf2015"
+            HeightRequest="100">
+        </BoxView>
+        <Label
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 0.22, 1, 0.05"
+            HorizontalOptions="Center"
+            TextColor="#292929"
+            FontSize="21"
+            Text="Saved Movies">
+        </Label>
+        <ListView
+            Margin="0, -5, 0, 0"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 1.285, 1, 0.8"
+            HasUnevenRows="True"
+            ItemSelected="OnListItemSelected"
+            IsGroupingEnabled="True"
+            x:Name="mainListView">
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell
+                        Height="36.5">
+                        <Label 
+                            Padding="12.5, 0, 0, 0"
+                            BackgroundColor="DarkRed"
+                            TextColor="White"
+                            FontSize="25"
+                            Text="{Binding FirstLetter}">
+                        </Label>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell
+                        Height="140">
+                        <StackLayout
+                            Orientation="Horizontal"
+                            BackgroundColor="Black"
+                            Spacing="20">
+                            <Image
+                                WidthRequest="130"
+                                BackgroundColor="White"
+                                Aspect="AspectFill"
+                                Source="{Binding Poster}">
+                            </Image>
+                            <Label
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                FontSize="22.75"
+                                TextColor="White"
+                                Text="{Binding Title}">
+                            </Label>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </AbsoluteLayout>
+</ContentPage>
