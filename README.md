@@ -2,11 +2,11 @@
 Miscellaneous xamarin projects done as exercises to learn the xamarin framework.
 
 PhotoGallery
-![alt text](https://ibb.co/rQjGn3z)
+![alt text](https://i.ibb.co/4FqZB2X/photogallery.jpg)
 
 ContactsBook
-![alt text](https://ibb.co/C9KrRWW)
+![alt text](https://i.ibb.co/GMQhzFF/contactsbook.jpg)
 
 MovieManager
-![alt text](https://ibb.co/MDRRzzS)
-![alt text](https://ibb.co/NV8Wjhp)
+![alt text](https://i.ibb.co/27jjzzh/moviemanager-mainmenu.jpg)
+![alt text](https://i.ibb.co/kHRq8n0/moviemanager-searchmenu.jpg)
