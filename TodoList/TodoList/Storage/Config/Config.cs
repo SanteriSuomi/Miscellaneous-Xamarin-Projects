@@ -3,11 +3,14 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace TodoList.Storage.Config
+namespace TodoList.Storage.ConfigSettings
 {
     public static class Config
     {
-        public static ConfigSettings Settings { get; }
+        /// <summary>
+        /// Returns the settings object containing local settings.
+        /// </summary>
+        public static ConfigSettings ST { get; }
 
         public class ConfigSettings
         {
@@ -25,7 +28,7 @@ namespace TodoList.Storage.Config
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     string result = reader.ReadToEnd();
-                    Settings = JsonConvert.DeserializeObject<ConfigSettings>(result);
+                    ST = JsonConvert.DeserializeObject<ConfigSettings>(result);
                 }
             }
             catch (Exception e)

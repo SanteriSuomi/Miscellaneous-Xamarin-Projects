@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using TodoList.Storage.Config;
+using TodoList.Storage.ConfigSettings;
 using Xamarin.Forms;
 
 namespace TodoList
@@ -17,7 +17,7 @@ namespace TodoList
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            testLabel.Text = Config.Settings.DatabaseName;
+            testLabel.Text = Config.ST.DatabaseName;
         }
     }
 }
