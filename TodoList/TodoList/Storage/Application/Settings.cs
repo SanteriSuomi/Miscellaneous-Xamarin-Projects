@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 
-namespace TodoList.Storage
+namespace TodoList.Storage.App
 {
     public enum Setting
     {
