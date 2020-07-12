@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:effects="clr-namespace:TodoList.Effects"
+             mc:Ignorable="d"
+             x:Class="TodoList.Pages.MainPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="Black">
+    <StackLayout>
+        <AbsoluteLayout
+            BackgroundColor="DimGray">
+            <Label
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="-0.185, 0.5, 0.6, 0.75"
+                HorizontalTextAlignment="Center"
+                FontSize="32.5"
+                Text="To-Do List"
+                TextColor="White">
+            </Label>
+            <Button
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="0.625, 0.5, 0.255, 0.7"
+                CornerRadius="10"
+                FontSize="14"
+                Text="New To-Do">
+            </Button>
+            <Button
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="0.9875, 0.5, 0.255, 0.7"
+                CornerRadius="10"
+                FontSize="14"
+                Text="Settings">
+            </Button>
+        </AbsoluteLayout>
+        <CollectionView
+            x:Name="collectionView"
+            SelectionMode="Single">
+            
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout
+                    Orientation="Vertical"
+                    Span="2">
+                </GridItemsLayout>
+            </CollectionView.ItemsLayout>
+            
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <AbsoluteLayout
+                        effects:LongPressedEffect.Command="{Binding LongPressCommand}"
+                        effects:LongPressedEffect.CommandParameter="{Binding .}">
+                        <AbsoluteLayout.Effects>
+                            <effects:LongPressedEffect/>
+                        </AbsoluteLayout.Effects>
+                        
+                        <BoxView 
+                            AbsoluteLayout.LayoutFlags="All"
+                            AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.9, 0.85"
+                            BackgroundColor="DimGray"
+                            CornerRadius="20">
+                        </BoxView>
+                        <local:CircleImage
+                            BorderThickness="0.2"
+                            AbsoluteLayout.LayoutFlags="All"
+                            AbsoluteLayout.LayoutBounds="-0.05, 0.5, 0.525, 0.6"
+                            WidthRequest="50"
+                            HeightRequest="50"
+                            Aspect="AspectFill"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Source="{Binding Image}">
+                        </local:CircleImage>
+                        <Label
+                            AbsoluteLayout.LayoutFlags="All"
+                            AbsoluteLayout.LayoutBounds="0.825, 0.5, 0.5, 0.5"
+                            LineBreakMode="TailTruncation"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"
+                            TextColor="White"
+                            Text="{Binding Title}">
+                        </Label>
+                    </AbsoluteLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

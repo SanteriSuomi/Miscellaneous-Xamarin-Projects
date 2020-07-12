@@ -10,7 +10,7 @@ namespace TodoList.Storage.ConfigSettings
         /// <summary>
         /// Returns the settings object containing local settings.
         /// </summary>
-        public static ConfigSettings ST { get; }
+        public static ConfigSettings ST { get; private set; }
 
         public class ConfigSettings
         {
@@ -18,6 +18,11 @@ namespace TodoList.Storage.ConfigSettings
         }
 
         static Config()
+        {
+            ReadConfigFile();
+        }
+
+        private static void ReadConfigFile()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = "TodoList.config.json";
