@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Input;
+using System.Threading.Tasks;
 using TodoList.Data;
 using Xamarin.Forms;
 
@@ -12,13 +12,19 @@ namespace TodoList.Pages
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
-        public ICommand LongPressCommand { get; }
+        public static MainPage This { get; private set; }
+
+        private const double multiselectBarTranslationAmount = 100;
+        private const uint multiselectBarTranslationDuration = 750;
+        private static readonly Easing multiselectBarEasing = Easing.SinOut;
+
+        private readonly List<object> emptyList = new List<object>();
+        private bool multiselectBarIsVisible;
 
         public MainPage()
         {
-            LongPressCommand = new Command(OnSelectionLongPressed);
             InitializeComponent();
-            BindingContext = this;
+            This = this;
         }
 
         protected override void OnAppearing()
@@ -59,14 +65,40 @@ namespace TodoList.Pages
             };
         }
 
-        private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnNewTodoButtonPressed(object sender, EventArgs e)
         {
+            Navigation.PushAsync(new NewTodoItemPage(collectionView), true);
         }
 
-        private async void OnSelectionLongPressed()
+        private async void OnSingleSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Console.Write("LONGPRESSED:");
-            await DisplayAlert("Long Pressed", "Long Pressed", "Cancel");
+            if (collectionView.SelectionMode != SelectionMode.Single) return;
+
+            //await DisplayAlert("Title", "Title", "Title");
+        }
+
+        public async Task OnSelectionLongPressed()
+        {
+            if (multiselectBarIsVisible) return;
+
+            multiselectBarIsVisible = true;
+            await TranslateMultiselectBar(multiselectBarTranslationAmount);
+            collectionView.SelectionMode = SelectionMode.Multiple;
+        }
+
+        private async void OnMultiselectBarButtonPressed(object sender, EventArgs e)
+        {
+            multiselectBarIsVisible = false;
+            collectionView.SelectedItems = emptyList;
+            await TranslateMultiselectBar(-multiselectBarTranslationAmount);
+            collectionView.SelectionMode = SelectionMode.Single;
+        }
+
+        private async Task TranslateMultiselectBar(double yTranslation)
+        {
+            double x = multiSelectionBar.TranslationX;
+            double y = multiSelectionBar.TranslationY + yTranslation;
+            await multiSelectionBar.TranslateTo(x, y, multiselectBarTranslationDuration, multiselectBarEasing);
         }
     }
 }

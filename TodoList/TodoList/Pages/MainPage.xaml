@@ -9,6 +9,7 @@
              x:Class="TodoList.Pages.MainPage"
              NavigationPage.HasNavigationBar="False"
              BackgroundColor="Black">
+    
     <StackLayout>
         <AbsoluteLayout
             BackgroundColor="DimGray">
@@ -25,7 +26,8 @@
                 AbsoluteLayout.LayoutBounds="0.625, 0.5, 0.255, 0.7"
                 CornerRadius="10"
                 FontSize="14"
-                Text="New To-Do">
+                Text="New To-Do"
+                Pressed="OnNewTodoButtonPressed">
             </Button>
             <Button
                 AbsoluteLayout.LayoutFlags="All"
@@ -34,11 +36,27 @@
                 FontSize="14"
                 Text="Settings">
             </Button>
+            
+            <AbsoluteLayout
+                AbsoluteLayout.LayoutFlags="SizeProportional"
+                AbsoluteLayout.LayoutBounds="0, -100, 1, 1"
+                BackgroundColor="DimGray"
+                x:Name="multiSelectionBar">
+                <Button
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    AbsoluteLayout.LayoutBounds="0.5, 0.5, 210, 40"
+                    CornerRadius="10"
+                    FontSize="14"
+                    Text="Cancel Multi-Selection"
+                    Clicked="OnMultiselectBarButtonPressed">
+                </Button>
+            </AbsoluteLayout>
+            
         </AbsoluteLayout>
         <CollectionView
             x:Name="collectionView"
-            SelectionMode="Single">
-            
+            SelectionMode="Single"
+            SelectionChanged="OnSingleSelectionChanged">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout
                     Orientation="Vertical"
@@ -49,10 +67,10 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <AbsoluteLayout
-                        effects:LongPressedEffect.Command="{Binding LongPressCommand}"
-                        effects:LongPressedEffect.CommandParameter="{Binding .}">
+                        effects:CustomPressedEffect.CommandLongPress="{Binding LongPressCommand}"
+                        effects:CustomPressedEffect.CommandClick="{Binding ClickCommand}">
                         <AbsoluteLayout.Effects>
-                            <effects:LongPressedEffect/>
+                            <effects:CustomPressedEffect/>
                         </AbsoluteLayout.Effects>
                         
                         <BoxView 

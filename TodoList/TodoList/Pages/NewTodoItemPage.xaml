@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="TodoList.Pages.NewTodoItemPage"
+             BackgroundColor="Black"
+             NavigationPage.HasNavigationBar="False">
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <AbsoluteLayout
+                HeightRequest="62.5"
+                BackgroundColor="DimGray">
+                <Label
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="-0.16, 0.5, 0.6, 0.75"
+                    HorizontalTextAlignment="Center"
+                    FontSize="32.5"
+                    Text="New To-Do"
+                    TextColor="White">
+                </Label>
+                <Button
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0.62, 0.5, 0.255, 0.7"
+                    CornerRadius="10"
+                    FontSize="14"
+                    Text="Save"
+                    Pressed="OnSaveButtonPressed">
+                </Button>
+                <Button
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0.985, 0.5, 0.255, 0.7"
+                    CornerRadius="10"
+                    FontSize="14"
+                    Text="Back"
+                    Pressed="OnBackButtonPressed">
+                </Button>
+            </AbsoluteLayout>
+            <Entry
+                HorizontalOptions="Center"
+                HeightRequest="52.5"
+                WidthRequest="205"
+                TextColor="White"
+                PlaceholderColor="White"
+                Placeholder="Title"
+                FontSize="25"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                MaxLength="15"
+                Focused="OnEntryTitleFocused"
+                Unfocused="OnEntryTitleUnfocused"
+                x:Name="entryTitle">
+            </Entry>
+            <Editor
+                HeightRequest="400"
+                WidthRequest="300"
+                TextColor="White"
+                PlaceholderColor="White"
+                Placeholder="                 Body"
+                HorizontalOptions="Center"
+                FontSize="25"
+                MaxLength="300"
+                Focused="OnEditorBodyFocused"
+                Unfocused="OnEditorBodyUnfocused"
+                x:Name="editorBody">
+            </Editor>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
