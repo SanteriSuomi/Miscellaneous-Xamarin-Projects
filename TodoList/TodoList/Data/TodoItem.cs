@@ -12,7 +12,7 @@ namespace TodoList.Data
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-        public ImageSource Image { get; set; }
+        public string Image { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
 
@@ -42,7 +42,6 @@ namespace TodoList.Data
             {
                 cv.SelectedItem = this;
                 RemoveSelectionAfterDelay(cv, removeSelectionDelayTime).SafeFireAndForget(true);
-                Console.WriteLine($"TYPE: {cv.SelectedItem.GetType().FullName}");
             }
         }
 

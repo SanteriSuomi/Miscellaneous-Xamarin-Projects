@@ -35,32 +35,32 @@ namespace TodoList.Pages
                 new TodoItem
                 {
                     Title = "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum",
-                    Image = ImageSource.FromUri(new Uri("https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"))
+                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
                 },
                 new TodoItem
                 {
                     Title = "Lorem ipsum",
-                    Image = ImageSource.FromUri(new Uri("https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"))
+                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
                 },
                 new TodoItem
                 {
                     Title = "Lorem ipsum",
-                    Image = ImageSource.FromUri(new Uri("https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"))
+                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
                 },
                 new TodoItem
                 {
                     Title = "Lorem ipsum",
-                    Image = ImageSource.FromUri(new Uri("https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"))
+                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
                 },
                 new TodoItem
                 {
                     Title = "Lorem ipsum",
-                    Image = ImageSource.FromUri(new Uri("https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"))
+                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
                 },
                 new TodoItem
                 {
                     Title = "Lorem ipsum",
-                    Image = ImageSource.FromUri(new Uri("https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"))
+                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
                 }
             };
         }
