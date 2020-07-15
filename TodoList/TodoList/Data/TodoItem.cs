@@ -15,6 +15,40 @@ namespace TodoList.Data
         public string Image { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
+        public string Date { get; set; }
+        /// <summary>
+        /// Return the date without the time part (only day/month/year).
+        /// </summary>
+        public string DateNoTime
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Date))
+                {
+                    return default;
+                }
+
+                return Date.Split(' ')[0];
+            }
+        }
+        public string Time { get; set; }
+        /// <summary>
+        /// Date and time combined, separated by one whitespace character.
+        /// </summary>
+        public string DateAndTime
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Date) 
+                    || string.IsNullOrEmpty(Time))
+                {
+                    return default;
+                }
+
+                var dateWithoutTime = Date.Split(' ')[0];
+                return $"{dateWithoutTime} {Time}";
+            }
+        }
 
         public ICommand LongPressCommand { get; }
         public ICommand ClickCommand { get; }
@@ -25,7 +59,7 @@ namespace TodoList.Data
         {
             LongPressCommand = new Command(() =>
             {
-                MainPage.This.OnSelectionLongPressed().SafeFireAndForget();
+                MainPage.Instance.OnSelectionLongPressed(this).SafeFireAndForget();
             });
 
             ClickCommand = new Command<CollectionView>(HandleClickEvent);

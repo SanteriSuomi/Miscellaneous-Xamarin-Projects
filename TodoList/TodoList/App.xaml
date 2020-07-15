@@ -5,7 +5,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="TodoList.App">
+    
     <Application.Resources>
-
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor" Value="DimGray"/>
+            <Setter Property="BarTextColor" Value="White"/>
+        </Style>
     </Application.Resources>
 </Application>

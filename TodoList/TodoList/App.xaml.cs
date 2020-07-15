@@ -6,7 +6,19 @@ namespace TodoList
 {
     public partial class App : Application
     {
-        public static TodoDatabase Database { get; private set; }
+        private static TodoDatabase database;
+        public static TodoDatabase Database
+        {
+            get
+            {
+                if (database is null)
+                {
+                    database = new TodoDatabase();
+                }
+
+                return database;
+            }
+        }
 
         public App()
         {
@@ -16,7 +28,7 @@ namespace TodoList
 
         protected override void OnStart()
         {
-            Database = new TodoDatabase();
+            // Not implemented on purpose.
         }
 
         protected override void OnSleep()

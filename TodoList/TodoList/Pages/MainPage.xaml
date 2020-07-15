@@ -48,11 +48,19 @@
                     CornerRadius="10"
                     FontSize="14"
                     Text="Cancel Multi-Selection"
-                    Clicked="OnMultiselectBarButtonPressed">
+                    Clicked="OnMultiselectBarCancelButtonPressed">
+                </Button>
+                <Button
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    AbsoluteLayout.LayoutBounds="0.975, 0.5, 80, 40"
+                    CornerRadius="10"
+                    FontSize="14"
+                    Text="Delete"
+                    Clicked="OnMultiselectBarDeleteButtonPressed">
                 </Button>
             </AbsoluteLayout>
-            
         </AbsoluteLayout>
+        
         <CollectionView
             x:Name="collectionView"
             SelectionMode="Single"

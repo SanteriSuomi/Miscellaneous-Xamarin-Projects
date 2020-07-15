@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace TodoList.Extensions
 {
+    #pragma warning disable S3168 // Justification: safe fire and forget task extension
     public static class TaskExtensions
     {
         /// <summary>
@@ -10,9 +11,7 @@ namespace TodoList.Extensions
         /// </summary>
         /// <param name="returnContext">Optionally return the context to the caller (true) or don't (false).</param>
         /// <param name="errorHandler">Optional error handler method.</param>
-        #pragma warning disable S3168 // Justification: safe fire and forget task extension
         public static async void SafeFireAndForget(this Task task, bool returnContext = false, Action<Exception> errorHandler = null)
-        #pragma warning restore S3168
         {
             try
             {
@@ -22,9 +21,34 @@ namespace TodoList.Extensions
             {
                 if (!(errorHandler is null))
                 {
-                    errorHandler(e);
+                    errorHandler?.Invoke(e);
                 }
             }
+        }
+
+        /// <summary>
+        /// Safely fire and forget an async method and return the task result.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="task"></param>
+        /// <param name="returnContext"></param>
+        /// <param name="errorHandler"></param>
+        /// <returns>Task result.</returns>
+        public static async Task<T> SafeFireAndForget<T>(this Task<T> task, bool returnContext = false, Action<Exception> errorHandler = null)
+        {
+            try
+            {
+                return await task.ConfigureAwait(returnContext);
+            }
+            catch (Exception e)
+            {
+                if (!(errorHandler is null))
+                {
+                    errorHandler?.Invoke(e);
+                }
+            }
+
+            return default;
         }
     }
 }

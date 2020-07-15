@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using TodoList.Data;
@@ -12,81 +13,58 @@ namespace TodoList.Pages
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
-        public static MainPage This { get; private set; }
+        public static MainPage Instance { get; private set; }
 
         private const double multiselectBarTranslationAmount = 100;
         private const uint multiselectBarTranslationDuration = 750;
         private static readonly Easing multiselectBarEasing = Easing.SinOut;
+
+        private ObservableCollection<TodoItem> todoCollection;
 
         private readonly List<object> emptyList = new List<object>();
         private bool multiselectBarIsVisible;
 
         public MainPage()
         {
+            Instance = this;
             InitializeComponent();
-            This = this;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            collectionView.ItemsSource = new List<TodoItem>()
-            {
-                new TodoItem
-                {
-                    Title = "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum",
-                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
-                },
-                new TodoItem
-                {
-                    Title = "Lorem ipsum",
-                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
-                },
-                new TodoItem
-                {
-                    Title = "Lorem ipsum",
-                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
-                },
-                new TodoItem
-                {
-                    Title = "Lorem ipsum",
-                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
-                },
-                new TodoItem
-                {
-                    Title = "Lorem ipsum",
-                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
-                },
-                new TodoItem
-                {
-                    Title = "Lorem ipsum",
-                    Image = "https://i.picsum.photos/id/149/200/200.jpg?hmac=ykhZe9T_HysK0voTz01NVBW7C8XlLYYT2EinqAhTA-0"
-                }
-            };
+            var todoItems = await App.Database.GetAll();
+            collectionView.ItemsSource = todoCollection = new ObservableCollection<TodoItem>(todoItems);
         }
 
         private void OnNewTodoButtonPressed(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new NewTodoItemPage(collectionView), true);
+            Navigation.PushAsync(new NewTodoItemPage(todoCollection), true);
         }
 
         private async void OnSingleSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (collectionView.SelectionMode != SelectionMode.Single) return;
 
-            //await DisplayAlert("Title", "Title", "Title");
+
         }
 
-        public async Task OnSelectionLongPressed()
+        public async Task OnSelectionLongPressed(TodoItem pressedItem)
         {
             if (multiselectBarIsVisible) return;
 
             multiselectBarIsVisible = true;
-            await TranslateMultiselectBar(multiselectBarTranslationAmount);
             collectionView.SelectionMode = SelectionMode.Multiple;
+            collectionView.SelectedItems.Add(pressedItem);
+            await TranslateMultiselectBar(multiselectBarTranslationAmount);
         }
 
-        private async void OnMultiselectBarButtonPressed(object sender, EventArgs e)
+        private async void OnMultiselectBarCancelButtonPressed(object sender, EventArgs e)
+        {
+            await CancelMultiselectBar();
+        }
+
+        private async Task CancelMultiselectBar()
         {
             multiselectBarIsVisible = false;
             collectionView.SelectedItems = emptyList;
@@ -99,6 +77,19 @@ namespace TodoList.Pages
             double x = multiSelectionBar.TranslationX;
             double y = multiSelectionBar.TranslationY + yTranslation;
             await multiSelectionBar.TranslateTo(x, y, multiselectBarTranslationDuration, multiselectBarEasing);
+        }
+
+        private async void OnMultiselectBarDeleteButtonPressed(object sender, EventArgs e)
+        {
+            var selectedItems = collectionView.SelectedItems;
+            for (int i = 0; i < selectedItems.Count; i++)
+            {
+                var todo = selectedItems[i] as TodoItem;
+                todoCollection.Remove(todo);
+                await App.Database.Remove(todo);
+            }
+
+            await CancelMultiselectBar();
         }
     }
 }
