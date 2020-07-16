@@ -4,12 +4,12 @@ using Xamarin.Forms.Xaml;
 namespace TodoList.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class NewTodoItemImagePreviewPage : ContentPage
+    public partial class TodoItemImageViewPage : ContentPage
     {
         public string ImagePath { get; }
         public string ImageName { get; }
 
-        public NewTodoItemImagePreviewPage(string imagePath, string imageName)
+        public TodoItemImageViewPage(string imagePath, string imageName)
         {
             InitializeComponent();
             ImagePath = imagePath;

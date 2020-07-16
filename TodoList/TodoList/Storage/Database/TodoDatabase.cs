@@ -24,5 +24,11 @@ namespace TodoList.Storage.Database.Implementation
             var connection = await GetConnection<TodoItem>().ConfigureAwait(false);
             return await AttemptAndRetry(() => connection.DeleteAsync(item)).ConfigureAwait(false);
         }
+
+        public async Task<int> Update(TodoItem item)
+        {
+            var connection = await GetConnection<TodoItem>().ConfigureAwait(false);
+            return await AttemptAndRetry(() => connection.UpdateAsync(item)).ConfigureAwait(false);
+        }
     }
 }

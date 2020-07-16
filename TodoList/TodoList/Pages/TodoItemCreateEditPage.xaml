@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="TodoList.Pages.NewTodoItemPage"
+             x:Class="TodoList.Pages.TodoItemCreateEditPage"
              BackgroundColor="Black"
              NavigationPage.HasNavigationBar="False">
     
@@ -93,6 +93,13 @@
                     x:Name="chooseImageLabel">
                 </Button>
 
+                <Switch
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0.745, 0.585, 0.2, 0.2"
+                    IsToggled="False"
+                    x:Name="notificationSwitch"
+                    Toggled="OnNotificationSwitchToggled">
+                </Switch>
                 <Label
                     AbsoluteLayout.LayoutFlags="All"
                     AbsoluteLayout.LayoutBounds="0.5, 0.65, 0.6, 0.3"
@@ -109,8 +116,9 @@
                     FontSize="22.5"
                     HorizontalOptions="Center"
                     FontAttributes="Italic"
-                    Text="Date"
-                    TextColor="White">
+                    Text=""
+                    TextColor="White"
+                    x:Name="datePickerLabel">
                 </Label>
                 <DatePicker
                     AbsoluteLayout.LayoutFlags="All"
@@ -119,7 +127,9 @@
                     FontSize="20"
                     Format="dd/MM/yyyy"
                     HorizontalOptions="Center"
-                    DateSelected="OnDateSelected">
+                    DateSelected="OnDateSelected"
+                    IsEnabled="False"
+                    x:Name="datePicker">
                 </DatePicker>
 
                 <Label
@@ -128,8 +138,9 @@
                     FontSize="22.5"
                     HorizontalOptions="Center"
                     FontAttributes="Italic"
-                    Text="Time"
-                    TextColor="White">
+                    Text=""
+                    TextColor="White"
+                    x:Name="timePickerLabel">
                 </Label>
                 <TimePicker
                     AbsoluteLayout.LayoutFlags="All"
@@ -138,7 +149,9 @@
                     FontSize="20"
                     Format="hh:mm"
                     HorizontalOptions="Center"
-                    PropertyChanged="OnTimePickerPropertyChanged">
+                    PropertyChanged="OnTimePickerPropertyChanged"
+                    IsEnabled="False"
+                    x:Name="timePicker">
                 </TimePicker>
             </AbsoluteLayout>
         </StackLayout>

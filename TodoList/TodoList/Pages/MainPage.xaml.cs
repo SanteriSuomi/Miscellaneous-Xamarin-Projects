@@ -39,14 +39,20 @@ namespace TodoList.Pages
 
         private void OnNewTodoButtonPressed(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new NewTodoItemPage(todoCollection), true);
+            Navigation.PushAsync(new TodoItemCreateEditPage(todoCollection, null, CreateEditPageType.Create, "New"), true);
         }
 
         private async void OnSingleSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (collectionView.SelectionMode != SelectionMode.Single) return;
+            if (collectionView.SelectionMode != SelectionMode.Single
+                || e.CurrentSelection.Count == 0) return;
 
-
+            var selection = e.CurrentSelection[0] as TodoItem;
+            bool result = await DisplayAlert($"Open {selection.Title}", $"Open To-Do {selection.Title}?", "Accept", "Cancel");
+            if (result)
+            {
+                await Navigation.PushAsync(new TodoItemInfoPage(selection, todoCollection), true);
+            }
         }
 
         public async Task OnSelectionLongPressed(TodoItem pressedItem)
@@ -64,14 +70,6 @@ namespace TodoList.Pages
             await CancelMultiselectBar();
         }
 
-        private async Task CancelMultiselectBar()
-        {
-            multiselectBarIsVisible = false;
-            collectionView.SelectedItems = emptyList;
-            await TranslateMultiselectBar(-multiselectBarTranslationAmount);
-            collectionView.SelectionMode = SelectionMode.Single;
-        }
-
         private async Task TranslateMultiselectBar(double yTranslation)
         {
             double x = multiSelectionBar.TranslationX;
@@ -81,6 +79,12 @@ namespace TodoList.Pages
 
         private async void OnMultiselectBarDeleteButtonPressed(object sender, EventArgs e)
         {
+            await RemoveSelectedItems();
+            await CancelMultiselectBar();
+        }
+
+        private async Task RemoveSelectedItems()
+        {
             var selectedItems = collectionView.SelectedItems;
             for (int i = 0; i < selectedItems.Count; i++)
             {
@@ -88,8 +92,14 @@ namespace TodoList.Pages
                 todoCollection.Remove(todo);
                 await App.Database.Remove(todo);
             }
+        }
 
-            await CancelMultiselectBar();
+        private async Task CancelMultiselectBar()
+        {
+            multiselectBarIsVisible = false;
+            collectionView.SelectionMode = SelectionMode.Single;
+            collectionView.SelectedItems = emptyList;
+            await TranslateMultiselectBar(-multiselectBarTranslationAmount);
         }
     }
 }

@@ -12,7 +12,20 @@ namespace TodoList.Data
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-        public string Image { get; set; }
+        private string image;
+        public string Image
+        {
+            get => image;
+            set
+            {
+                image = value;
+                UpdateImageName(value);
+            }
+        }
+        /// <summary>
+        /// Return only the image name of Image.
+        /// </summary>
+        public string ImageName { get; private set; }
         public string Title { get; set; }
         public string Body { get; set; }
         public string Date { get; set; }
@@ -39,10 +52,10 @@ namespace TodoList.Data
         {
             get
             {
-                if (string.IsNullOrEmpty(Date) 
+                if (string.IsNullOrEmpty(Date)
                     || string.IsNullOrEmpty(Time))
                 {
-                    return default;
+                    return string.Empty;
                 }
 
                 var dateWithoutTime = Date.Split(' ')[0];
@@ -103,6 +116,19 @@ namespace TodoList.Data
         {
             await Task.Delay(TimeSpan.FromSeconds(delay)).ConfigureAwait(true);
             cv.SelectedItem = null;
+        }
+
+        private void UpdateImageName(string value)
+        {
+            try
+            {
+                var imageSplit = value.Split('/');
+                ImageName = imageSplit[imageSplit.Length - 1];
+            }
+            catch (Exception)
+            {
+                ImageName = string.Empty;
+            }
         }
     }
 }
