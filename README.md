@@ -1,9 +1,9 @@
 # Miscellaneous-Xamarin-Projects
 Personal solo projects done as exercises to learn the Xamarin platform.
 
-![PhotoGallery](https://i.ibb.co/4FqZB2X/photogallery.jpg)
+<img src="https://i.ibb.co/4FqZB2X/photogallery.jpg" width=50% height=50%>
 
-![ContactsBook](https://i.ibb.co/GMQhzFF/contactsbook.jpg)
+<img src="https://i.ibb.co/GMQhzFF/contactsbook.jpg" width=50% height=50%>
 
-![MovieManager Main Menu](https://i.ibb.co/27jjzzh/moviemanager-mainmenu.jpg)
-![MovieManager Search Menu](https://i.ibb.co/kHRq8n0/moviemanager-searchmenu.jpg)
+<img src="https://i.ibb.co/27jjzzh/moviemanager-mainmenu.jpg" width=50% height=50%>
+<img src="https://i.ibb.co/kHRq8n0/moviemanager-searchmenu.jpg" width=50% height=50%>
