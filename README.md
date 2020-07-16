@@ -1,5 +1,5 @@
 # Miscellaneous-Xamarin-Projects
-Miscellaneous xamarin projects done as exercises to learn the xamarin framework.
+Personal solo projects done as exercises to learn the Xamarin platform.
 
 ![PhotoGallery](https://i.ibb.co/4FqZB2X/photogallery.jpg)
 
