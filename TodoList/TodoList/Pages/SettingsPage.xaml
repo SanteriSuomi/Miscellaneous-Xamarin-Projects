@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:colorpicker="clr-namespace:Amporis.Xamarin.Forms.ColorPicker;assembly=Amporis.Xamarin.Forms.ColorPicker"
+             mc:Ignorable="d"
+             x:Class="TodoList.Pages.SettingsPage"
+             Title="Settings">
+    
+    <ContentPage.Content>
+        <StackLayout
+                HorizontalOptions="Center" 
+                VerticalOptions="Center">
+            <StackLayout>
+                <Label
+                    FontSize="20"
+                    Text="Bar Color">
+                </Label>
+                <colorpicker:ColorPickerMixer>
+                </colorpicker:ColorPickerMixer>
+            </StackLayout>
+            
+            <Label Padding="0, 10, 0, 10"></Label>
+            
+            <StackLayout>
+                <Label
+                    FontSize="20"
+                    Text="Bar Color">
+                </Label>
+                <colorpicker:ColorPickerMixer>
+                </colorpicker:ColorPickerMixer>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

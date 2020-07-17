@@ -122,5 +122,10 @@ namespace TodoList.Pages
             collectionView.SelectedItems = emptyCollection;
             await TranslateMultiselectBar(-Config.ST.MultiselectBarTranslationAmount);
         }
+
+        private async void OnSettingsButtonPressed(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new SettingsPage());
+        }
     }
 }

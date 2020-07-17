@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
+using TodoList.Extensions;
 
 namespace TodoList.Storage.ConfigSettings
 {
@@ -24,11 +27,14 @@ namespace TodoList.Storage.ConfigSettings
             public double MultiselectBarTranslationAmount { get; set; }
             public uint MultiselectBarTranslationDuration { get; set; }
             public string MultiselectBarEasingType { get; set; }
+
+            public Color ThemeBarColor { get; set; }
+            public Color ThemeBackgroundColor { get; set; }
         }
 
         static Config()
         {
-            ReadConfigFile();
+            ReadConfigFile().SafeFireAndForget(false);
         }
 
         /// <summary>
@@ -45,15 +51,34 @@ namespace TodoList.Storage.ConfigSettings
             return default;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S3966:Objects should not be disposed more than once", Justification = "Objects are only disposed once.")]
-        private static void ReadConfigFile()
+        #pragma warning disable S3966 // Objects should not be disposed more than once (Justification: objects are only disposed once)
+        /// <summary>
+        /// Read the config file and update the config file object.
+        /// </summary>
+        public static async Task ReadConfigFile()
         {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(configName))
+            using (Stream stream = GetLocalAssembly())
             using (StreamReader reader = new StreamReader(stream))
             {
-                string result = reader.ReadToEnd();
+                string result = await reader.ReadToEndAsync();
                 ST = JsonConvert.DeserializeObject<ConfigSettings>(result);
             }
         }
+
+        /// <summary>
+        /// Update the config file on the disk.
+        /// </summary>
+        public static async Task WriteConfigFile()
+        {
+            using (Stream stream = GetLocalAssembly())
+            using (StreamWriter writer = new StreamWriter(stream))
+            {
+                string objAsJson = JsonConvert.SerializeObject(ST, Formatting.Indented);
+                await writer.WriteAsync(objAsJson);
+            }
+        }
+
+        private static Stream GetLocalAssembly() 
+            => Assembly.GetExecutingAssembly().GetManifestResourceStream(configName);
     }
 }
