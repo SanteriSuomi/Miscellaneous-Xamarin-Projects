@@ -1,9 +1,15 @@
 ﻿using Plugin.FilePicker;
+using Plugin.LocalNotifications;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text;
 using System.Threading.Tasks;
 using TodoList.Data;
+using TodoList.Extensions;
+using TodoList.Storage.ConfigSettings;
+using TodoList.Utilities;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -19,25 +25,31 @@ namespace TodoList.Pages
     public partial class TodoItemCreateEditPage : ContentPage
     {
         private readonly CreateEditPageType pageType;
-
-        private static readonly string[] filePickerAllowedTypes = new string[] { "image/*" };
-
         private readonly string originalEntryTitlePlaceHolderText;
         private readonly string originalEditorBodyPlaceHolderText;
 
-        private readonly ObservableCollection<TodoItem> todoCollection;
+        private readonly ObservableCollection<TodoItem> mainTodoCollection;
         private readonly TodoItem localTodo;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S112:General exceptions should never be thrown", Justification = "Dev")]
         public TodoItemCreateEditPage(ObservableCollection<TodoItem> todoCollection, TodoItem editingItem, CreateEditPageType pageType, string pageTitlePrefix)
         {
             InitializeComponent();
-            this.todoCollection = todoCollection;
+            this.mainTodoCollection = todoCollection;
             originalEntryTitlePlaceHolderText = entryTitle.Placeholder;
-            originalEditorBodyPlaceHolderText = editorBody.Placeholder;
 
+            // Because xamarin editor does not have a placeholder horizontal alignment property, attempt to center the text manually by using the device's width.
+            StringBuilder editorPlaceHolderBuilder = new StringBuilder();
+            int amountOfWhiteSpace = (int)(DeviceDisplay.MainDisplayInfo.Width / 100) + 3;
+            for (int i = 0; i < amountOfWhiteSpace; i++)
+            {
+                editorPlaceHolderBuilder.Append(' ');
+            }
+            editorPlaceHolderBuilder.Append("Body");
+            originalEditorBodyPlaceHolderText = editorPlaceHolderBuilder.ToString();
+            editorBody.Placeholder = originalEditorBodyPlaceHolderText;
 
-            Title = $"{pageTitlePrefix} To-Do";
+            titleLabel.Text = $"{pageTitlePrefix} To-Do";
             this.pageType = pageType;
             if (this.pageType == CreateEditPageType.Edit)
             {
@@ -45,15 +57,16 @@ namespace TodoList.Pages
                 entryTitle.Text = localTodo.Title;
                 editorBody.Text = localTodo.Body;
                 chooseImageLabel.Text = localTodo.ImageName;
-                if (DateTime.TryParse(localTodo.Date, out DateTime dateResult)
-                    && TimeSpan.TryParse(localTodo.Time, out TimeSpan timeResult))
+
+                var toggled = localTodo.HasNotification;
+                notificationSwitch.IsToggled = toggled;
+
+                var (hasData, dateAndTime) = localTodo.GetCombinedDateTime(false);
+                if (localTodo.HasNotification
+                    && hasData)
                 {
-                    datePicker.Date = dateResult;
-                    timePicker.Time = timeResult;
-                }
-                else
-                {
-                    throw new NullReferenceException("Could not parse Date or Time of localTodo item");
+                    datePicker.Date = dateAndTime.date;
+                    timePicker.Time = dateAndTime.time;
                 }
             }
             else
@@ -65,10 +78,12 @@ namespace TodoList.Pages
             }
         }
 
+        #region Back
         private async void OnBackButtonPressed(object sender, EventArgs e)
         {
             await Navigation.PopAsync(true);
         }
+        #endregion
 
         #region Save
         private async void OnSaveButtonPressed(object sender, EventArgs e)
@@ -82,22 +97,56 @@ namespace TodoList.Pages
                 await DisplayAlert("Error", "Title or body is empty", "Cancel");
                 return;
             }
-            else if (!IsSelectedDateAndTimeValid(timePicker))
+            else if (notificationSwitch.IsToggled
+                     && !IsSelectedDateAndTimeValid(timePicker))
             {
                 await DisplayAlert("Error", "Notification date or time is not valid", "Cancel");
                 return;
             }
 
+            TrySetDefaultImage();
             TrimTodoText();
-            await SaveOrUpdateItem();
-            await Navigation.PopAsync();
+            TrySetNotification();
+            await SaveOrUpdateCollectionAndDatabase();
+            await Navigation.PopToRootAsync();
         }
 
-        private async Task SaveOrUpdateItem()
+        private void TrySetNotification()
+        {
+            var (hasData, dateAndTime) = localTodo.GetCombinedDateTime(true);
+            if (hasData && localTodo.HasNotification)
+            {
+                var truncatedBody = $"{localTodo.Body.Truncate(Config.ST.NotificationBodyLength)}...";
+                var notificationId = RandomUtilities.GetRandomInt(1, Config.ST.NotificationMaxRandom);
+                var exactDateAndTime = dateAndTime.date + dateAndTime.time;
+                CrossLocalNotifications.Current.Show(localTodo.Title, truncatedBody, notificationId, exactDateAndTime);
+                localTodo.NotificationId = notificationId;
+            }
+            else if (!localTodo.HasNotification)
+            {
+                CrossLocalNotifications.Current.Cancel(localTodo.NotificationId);
+            }
+        }
+
+        private void TrySetDefaultImage()
+        {
+            if (!localTodo.HasImage)
+            {
+                localTodo.Image = Config.ST.DefaultTodoIconPath;
+            }
+        }
+
+        private void TrimTodoText()
+        {
+            localTodo.Title = localTodo.Title.Trim();
+            localTodo.Body = localTodo.Body.Trim();
+        }
+
+        private async Task SaveOrUpdateCollectionAndDatabase()
         {
             if (pageType == CreateEditPageType.Create)
             {
-                todoCollection.Add(localTodo);
+                mainTodoCollection.Add(localTodo);
                 await App.Database.Save(localTodo);
                 await DisplayAlert("New To-Do Saved", "Item has been saved", "Ok");
             }
@@ -106,12 +155,6 @@ namespace TodoList.Pages
                 await App.Database.Update(localTodo);
                 await DisplayAlert("Edit To-Do Saved", "Item has been saved", "Ok");
             }
-        }
-
-        private void TrimTodoText()
-        {
-            localTodo.Title = localTodo.Title.Trim();
-            localTodo.Body = localTodo.Body.Trim();
         }
         #endregion
 
@@ -165,7 +208,7 @@ namespace TodoList.Pages
         {
             try
             {
-                var file = await CrossFilePicker.Current.PickFile(filePickerAllowedTypes);
+                var file = await CrossFilePicker.Current.PickFile(Config.ST.AllowedTodoImageTypes);
                 if (file == null) return;
 
                 chooseImageLabel.Text = file.FileName;
@@ -191,21 +234,23 @@ namespace TodoList.Pages
         #region Date/Time
         private void OnNotificationSwitchToggled(object sender, ToggledEventArgs e)
         {
-            SetNotificationPickerVisibilities(e.Value);
+            SetNotificationState(e.Value);
         }
 
-        private void SetNotificationPickerVisibilities(bool value)
+        private void SetNotificationState(bool value)
         {
             datePicker.IsEnabled = value;
             timePicker.IsEnabled = value;
 
             if (value)
             {
+                localTodo.HasNotification = true;
                 datePickerLabel.Text = "Date";
                 timePickerLabel.Text = "Time";
             }
             else
             {
+                localTodo.HasNotification = false;
                 datePickerLabel.Text = string.Empty;
                 timePickerLabel.Text = string.Empty;
             }
@@ -245,5 +290,7 @@ namespace TodoList.Pages
                     && picker.Time.TotalMinutes <= DateTime.Now.TimeOfDay.TotalMinutes);
         }
         #endregion
+
+
     }
 }

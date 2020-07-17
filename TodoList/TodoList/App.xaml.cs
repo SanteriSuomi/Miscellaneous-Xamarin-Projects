@@ -28,17 +28,17 @@ namespace TodoList
 
         protected override void OnStart()
         {
-            // Not implemented on purpose.
+            Pages.MainPage.Instance.TryCheckAndUpdateNotifications();
         }
 
         protected override void OnSleep()
         {
-            // Not implemented on purpose.
+            Pages.MainPage.Instance.TryCheckAndUpdateNotifications();
         }
 
         protected override void OnResume()
         {
-            // Not implemented on purpose.
+            Pages.MainPage.Instance.TryCheckAndUpdateNotifications();
         }
     }
 }

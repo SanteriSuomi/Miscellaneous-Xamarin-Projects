@@ -1,8 +1,8 @@
-﻿using TodoList.Data;
+﻿using System;
+using System.Collections.ObjectModel;
+using TodoList.Data;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System;
-using System.Collections.ObjectModel;
 
 namespace TodoList.Pages
 {
@@ -18,6 +18,12 @@ namespace TodoList.Pages
             TodoItem = item;
             this.todoCollection = todoCollection;
             BindingContext = TodoItem;
+            if (!TodoItem.HasNotification)
+            {
+                notificationLabel.Text = "No Notification";
+                dateLabel.IsVisible = false;
+                timeLabel.IsVisible = false;
+            }
         }
 
         private async void OnImageClicked(object sender, EventArgs e)

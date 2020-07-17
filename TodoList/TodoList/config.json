@@ -1,3 +1,11 @@
 {
-  "DatabaseName": "tododb.db3"
+  "DatabaseName": "tododb.db3",
+  "DefaultTodoIconPath": "todo_default.jpg",
+  "AllowedTodoImageTypes": [ "image/*" ],
+  "SingleSelectRemoveDelay": 0.35,
+  "NotificationBodyLength": 40,
+  "NotificationMaxRandom": 100000,
+  "MultiselectBarTranslationAmount": 100,
+  "MultiselectBarTranslationDuration": 750,
+  "MultiselectBarEasingType": "SinOut"
 }

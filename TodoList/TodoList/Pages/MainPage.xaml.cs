@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Plugin.LocalNotifications;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using TodoList.Data;
+using TodoList.Storage.ConfigSettings;
 using Xamarin.Forms;
 
 namespace TodoList.Pages
@@ -15,26 +17,48 @@ namespace TodoList.Pages
     {
         public static MainPage Instance { get; private set; }
 
-        private const double multiselectBarTranslationAmount = 100;
-        private const uint multiselectBarTranslationDuration = 750;
-        private static readonly Easing multiselectBarEasing = Easing.SinOut;
-
         private ObservableCollection<TodoItem> todoCollection;
 
-        private readonly List<object> emptyList = new List<object>();
+        private readonly Easing multiselectBarEasing;
+        private readonly List<object> emptyCollection = new List<object>();
         private bool multiselectBarIsVisible;
 
         public MainPage()
         {
             Instance = this;
             InitializeComponent();
+            multiselectBarEasing = Config.GetFieldValue<Easing>(Config.ST.MultiselectBarEasingType);
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            var todoItems = await App.Database.GetAll();
-            collectionView.ItemsSource = todoCollection = new ObservableCollection<TodoItem>(todoItems);
+            if (todoCollection is null)
+            {
+                var todoItems = await App.Database.GetAll();
+                collectionView.ItemsSource = todoCollection = new ObservableCollection<TodoItem>(todoItems);
+            }
+        }
+
+        /// <summary>
+        /// Check every saved item for notification changes, and update them accordingly.
+        /// </summary>
+        public void TryCheckAndUpdateNotifications()
+        {
+            if (todoCollection is null) return;
+
+            foreach (var item in todoCollection)
+            {
+                var (hasData, dateAndTime) = item.GetCombinedDateTime(true);
+                var totalTime = dateAndTime.date + dateAndTime.time;
+                if (hasData
+                    && totalTime < DateTime.Now)
+                {
+                    CrossLocalNotifications.Current.Cancel(item.NotificationId);
+                    item.HasNotification = false;
+                    item.NotificationId = default;
+                }
+            }
         }
 
         private void OnNewTodoButtonPressed(object sender, EventArgs e)
@@ -48,11 +72,7 @@ namespace TodoList.Pages
                 || e.CurrentSelection.Count == 0) return;
 
             var selection = e.CurrentSelection[0] as TodoItem;
-            bool result = await DisplayAlert($"Open {selection.Title}", $"Open To-Do {selection.Title}?", "Accept", "Cancel");
-            if (result)
-            {
-                await Navigation.PushAsync(new TodoItemInfoPage(selection, todoCollection), true);
-            }
+            await Navigation.PushAsync(new TodoItemInfoPage(selection, todoCollection), true);
         }
 
         public async Task OnSelectionLongPressed(TodoItem pressedItem)
@@ -62,7 +82,7 @@ namespace TodoList.Pages
             multiselectBarIsVisible = true;
             collectionView.SelectionMode = SelectionMode.Multiple;
             collectionView.SelectedItems.Add(pressedItem);
-            await TranslateMultiselectBar(multiselectBarTranslationAmount);
+            await TranslateMultiselectBar(Config.ST.MultiselectBarTranslationAmount);
         }
 
         private async void OnMultiselectBarCancelButtonPressed(object sender, EventArgs e)
@@ -74,7 +94,7 @@ namespace TodoList.Pages
         {
             double x = multiSelectionBar.TranslationX;
             double y = multiSelectionBar.TranslationY + yTranslation;
-            await multiSelectionBar.TranslateTo(x, y, multiselectBarTranslationDuration, multiselectBarEasing);
+            await multiSelectionBar.TranslateTo(x, y, Config.ST.MultiselectBarTranslationDuration, multiselectBarEasing);
         }
 
         private async void OnMultiselectBarDeleteButtonPressed(object sender, EventArgs e)
@@ -89,6 +109,7 @@ namespace TodoList.Pages
             for (int i = 0; i < selectedItems.Count; i++)
             {
                 var todo = selectedItems[i] as TodoItem;
+                CrossLocalNotifications.Current.Cancel(todo.NotificationId);
                 todoCollection.Remove(todo);
                 await App.Database.Remove(todo);
             }
@@ -98,8 +119,8 @@ namespace TodoList.Pages
         {
             multiselectBarIsVisible = false;
             collectionView.SelectionMode = SelectionMode.Single;
-            collectionView.SelectedItems = emptyList;
-            await TranslateMultiselectBar(-multiselectBarTranslationAmount);
+            collectionView.SelectedItems = emptyCollection;
+            await TranslateMultiselectBar(-Config.ST.MultiselectBarTranslationAmount);
         }
     }
 }

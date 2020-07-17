@@ -23,7 +23,8 @@
                 BorderColor="DimGray"
                 BorderThickness="2.5"
                 Aspect="AspectFill"
-                Source="{Binding Image}">
+                Source="{Binding Image}"
+                x:Name="todoImage">
             </local:CircleImage>
             <Button
                 AbsoluteLayout.LayoutFlags="All"
@@ -31,27 +32,37 @@
                 Clicked="OnImageClicked"
                 BackgroundColor="Transparent">
             </Button>
+            <StackLayout
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="0.87, 0.125, 0.3, 0.2">
+                <Label
+                    TextDecorations="Underline"
+                    HorizontalOptions="Center"
+                    TextColor="White"
+                    FontSize="18"
+                    Text="Notification"
+                    x:Name="notificationLabel">
+                </Label>
+                <Label
+                    HorizontalOptions="Center"
+                    TextColor="White"
+                    FontSize="20"
+                    LineBreakMode="TailTruncation"
+                    Text="{Binding DateNoTime}"
+                    x:Name="dateLabel">
+                </Label>
+                <Label
+                    HorizontalOptions="Center"
+                    TextColor="White"
+                    FontSize="20"
+                    LineBreakMode="TailTruncation"
+                    Text="{Binding Time}"
+                    x:Name="timeLabel">
+                </Label>
+            </StackLayout>
             <Label
                 AbsoluteLayout.LayoutFlags="All"
-                AbsoluteLayout.LayoutBounds="0.9, 0.165, 0.3, 0.2"
-                HorizontalOptions="Center"
-                TextColor="White"
-                FontSize="20"
-                LineBreakMode="TailTruncation"
-                Text="{Binding DateNoTime}">
-            </Label>
-            <Label
-                AbsoluteLayout.LayoutFlags="All"
-                AbsoluteLayout.LayoutBounds="0.9, 0.215, 0.3, 0.2"
-                HorizontalOptions="Center"
-                TextColor="White"
-                FontSize="20"
-                LineBreakMode="TailTruncation"
-                Text="{Binding Time}">
-            </Label>
-            <Label
-                AbsoluteLayout.LayoutFlags="All"
-                AbsoluteLayout.LayoutBounds="0.2, 0.42, 0.45, 0.2"
+                AbsoluteLayout.LayoutBounds="0.25, 0.42, 0.35, 0.2"
                 HorizontalOptions="Center"
                 TextColor="White"
                 FontSize="15"

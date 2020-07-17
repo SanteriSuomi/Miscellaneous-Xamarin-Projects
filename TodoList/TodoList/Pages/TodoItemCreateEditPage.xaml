@@ -18,8 +18,8 @@
                     AbsoluteLayout.LayoutBounds="-0.16, 0.5, 0.6, 0.75"
                     HorizontalTextAlignment="Center"
                     FontSize="32.5"
-                    Text="New To-Do"
-                    TextColor="White">
+                    TextColor="White"
+                    x:Name="titleLabel">
                 </Label>
                 <Button
                     AbsoluteLayout.LayoutFlags="All"

@@ -1,15 +1,40 @@
 ﻿using SQLite;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TodoList.Extensions;
 using TodoList.Pages;
+using TodoList.Storage.ConfigSettings;
 using Xamarin.Forms;
 
 namespace TodoList.Data
 {
-    public class TodoItem
+    public class TodoItem : INotifyPropertyChanged
     {
+        #region PropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+
+        public ICommand LongPressCommand { get; }
+        public ICommand ClickCommand { get; }
+
+        public TodoItem()
+        {
+            LongPressCommand = new Command(() =>
+            {
+                MainPage.Instance.OnSelectionLongPressed(this).SafeFireAndForget();
+            });
+
+            ClickCommand = new Command<CollectionView>(HandleClickEvent);
+        }
+
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         private string image;
@@ -20,15 +45,71 @@ namespace TodoList.Data
             {
                 image = value;
                 UpdateImageName(value);
+                NotifyPropertyChanged();
             }
         }
+
+        public bool HasImage => !string.IsNullOrEmpty(image);
+
+        private string imageName;
         /// <summary>
         /// Return only the image name of Image.
         /// </summary>
-        public string ImageName { get; private set; }
-        public string Title { get; set; }
-        public string Body { get; set; }
-        public string Date { get; set; }
+        public string ImageName
+        {
+            get => imageName;
+            private set
+            {
+                imageName = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string title;
+        public string Title
+        {
+            get => title;
+            set
+            {
+                title = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string body;
+        public string Body
+        {
+            get => body;
+            set
+            {
+                body = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool hasNotification;
+        public bool HasNotification
+        {
+            get => hasNotification;
+            set
+            {
+                hasNotification = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public int NotificationId { get; set; }
+
+        private string date;
+        public string Date
+        {
+            get => date;
+            set
+            {
+                date = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Return the date without the time part (only day/month/year).
         /// </summary>
@@ -44,7 +125,18 @@ namespace TodoList.Data
                 return Date.Split(' ')[0];
             }
         }
-        public string Time { get; set; }
+
+        private string time;
+        public string Time
+        {
+            get => time;
+            set
+            {
+                time = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Date and time combined, separated by one whitespace character.
         /// </summary>
@@ -63,19 +155,26 @@ namespace TodoList.Data
             }
         }
 
-        public ICommand LongPressCommand { get; }
-        public ICommand ClickCommand { get; }
-
-        private const double removeSelectionDelayTime = 0.4;
-
-        public TodoItem()
+        public (bool hasData, (DateTime date, TimeSpan time) dateAndTime) GetCombinedDateTime(bool useDateWithNoTime)
         {
-            LongPressCommand = new Command(() =>
+            bool dateParsed;
+            DateTime dateResult;
+            if (useDateWithNoTime)
             {
-                MainPage.Instance.OnSelectionLongPressed(this).SafeFireAndForget();
-            });
+                dateParsed = DateTime.TryParse(DateNoTime, out dateResult);
+            }
+            else
+            {
+                dateParsed = DateTime.TryParse(date, out dateResult);
+            }
 
-            ClickCommand = new Command<CollectionView>(HandleClickEvent);
+            if (dateParsed
+                && TimeSpan.TryParse(time, out TimeSpan timeResult))
+            {
+                return (true, (dateResult, timeResult));
+            }
+
+            return (false, (default, default));
         }
 
         private void HandleClickEvent(CollectionView cv)
@@ -88,7 +187,7 @@ namespace TodoList.Data
             else
             {
                 cv.SelectedItem = this;
-                RemoveSelectionAfterDelay(cv, removeSelectionDelayTime).SafeFireAndForget(true);
+                RemoveSelectionAfterDelay(cv, Config.ST.SingleSelectRemoveDelay).SafeFireAndForget(true);
             }
         }
 
