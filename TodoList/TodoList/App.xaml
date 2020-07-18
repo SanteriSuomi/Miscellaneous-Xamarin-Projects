@@ -7,9 +7,37 @@
              x:Class="TodoList.App">
     
     <Application.Resources>
-        <Style TargetType="NavigationPage">
-            <Setter Property="BarBackgroundColor" Value="DimGray"/>
-            <Setter Property="BarTextColor" Value="White"/>
+        <Color x:Key="BackgroundColor">Black</Color>
+        <Color x:Key="BarColor">DimGray</Color>
+        <Color x:Key="BarTextColor">White</Color>
+        
+        <Color x:Key="NavigationTitleTextColor">White</Color>
+        <Color x:Key="NavigationButtonTextColor">Black</Color>
+        
+        <Color x:Key="CreateEditPageEntryEditorColor">White</Color>
+        <Color x:Key="CreateEditPageButtonTextColor">Black</Color>
+        
+        <Color x:Key="MainPageCollectionItemColor">DimGray</Color>
+
+        <Style 
+            TargetType="ContentPage"
+            ApplyToDerivedTypes="True">
+            <Setter
+                Property="BackgroundColor"
+                Value="{DynamicResource BackgroundColor}">
+            </Setter>
+        </Style>
+        <Style
+            TargetType="NavigationPage"
+            ApplyToDerivedTypes="True">
+            <Setter
+                Property="BarBackgroundColor"
+                Value="{DynamicResource BarColor}">
+            </Setter>
+            <Setter
+                Property="BarTextColor"
+                Value="{DynamicResource BarTextColor}">
+            </Setter>
         </Style>
     </Application.Resources>
 </Application>

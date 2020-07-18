@@ -35,7 +35,7 @@ namespace TodoList.Pages
             base.OnAppearing();
             if (todoCollection is null)
             {
-                var todoItems = await App.Database.GetAll();
+                var todoItems = await App.TodoDatabase.GetAll();
                 collectionView.ItemsSource = todoCollection = new ObservableCollection<TodoItem>(todoItems);
             }
         }
@@ -111,7 +111,7 @@ namespace TodoList.Pages
                 var todo = selectedItems[i] as TodoItem;
                 CrossLocalNotifications.Current.Cancel(todo.NotificationId);
                 todoCollection.Remove(todo);
-                await App.Database.Remove(todo);
+                await App.TodoDatabase.Remove(todo);
             }
         }
 

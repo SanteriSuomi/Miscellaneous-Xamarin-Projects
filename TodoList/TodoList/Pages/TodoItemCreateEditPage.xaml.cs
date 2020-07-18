@@ -147,12 +147,12 @@ namespace TodoList.Pages
             if (pageType == CreateEditPageType.Create)
             {
                 mainTodoCollection.Add(localTodo);
-                await App.Database.Save(localTodo);
+                await App.TodoDatabase.Save(localTodo);
                 await DisplayAlert("New To-Do Saved", "Item has been saved", "Ok");
             }
             else
             {
-                await App.Database.Update(localTodo);
+                await App.TodoDatabase.Update(localTodo);
                 await DisplayAlert("Edit To-Do Saved", "Item has been saved", "Ok");
             }
         }

@@ -6,30 +6,118 @@
              xmlns:colorpicker="clr-namespace:Amporis.Xamarin.Forms.ColorPicker;assembly=Amporis.Xamarin.Forms.ColorPicker"
              mc:Ignorable="d"
              x:Class="TodoList.Pages.SettingsPage"
-             Title="Settings">
-    
+             Title="Settings"
+             BackgroundColor="#808080">
+
     <ContentPage.Content>
         <StackLayout
-                HorizontalOptions="Center" 
-                VerticalOptions="Center">
-            <StackLayout>
-                <Label
-                    FontSize="20"
-                    Text="Bar Color">
-                </Label>
-                <colorpicker:ColorPickerMixer>
-                </colorpicker:ColorPickerMixer>
+            HorizontalOptions="Center"
+            VerticalOptions="Start">
+            <StackLayout
+                Orientation="Horizontal">
+                <AbsoluteLayout>
+                    <BoxView
+                        AbsoluteLayout.LayoutFlags="All"
+                        AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1">
+                    </BoxView>
+                    <StackLayout>
+                        <Label
+                            FontSize="20"
+                            TextColor="Black"
+                            Text="Background Color">
+                        </Label>
+                        <colorpicker:ColorPickerEntry
+                            Color="{DynamicResource BackgroundColor}"
+                            PropertyChanged="OnBackgroundColorPickerPropertyChanged">
+                        </colorpicker:ColorPickerEntry>
+                    </StackLayout>
+                </AbsoluteLayout>
+
+                <Label HeightRequest="20"></Label>
+
+                <AbsoluteLayout>
+                    <BoxView
+                        AbsoluteLayout.LayoutFlags="All"
+                        AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1">
+                    </BoxView>
+                    <StackLayout>
+                        <Label
+                            FontSize="20"
+                            TextColor="Black"
+                            Text="Bar Color">
+                        </Label>
+                        <colorpicker:ColorPickerEntry
+                            Color="{DynamicResource BarColor}"
+                            PropertyChanged="OnBarColorPickerPropertyChanged">
+                        </colorpicker:ColorPickerEntry>
+                    </StackLayout>
+                </AbsoluteLayout>
             </StackLayout>
-            
-            <Label Padding="0, 10, 0, 10"></Label>
-            
-            <StackLayout>
-                <Label
-                    FontSize="20"
-                    Text="Bar Color">
-                </Label>
-                <colorpicker:ColorPickerMixer>
-                </colorpicker:ColorPickerMixer>
+
+            <Label HeightRequest="20"></Label>
+
+            <StackLayout
+                Orientation="Horizontal">
+                <AbsoluteLayout>
+                    <BoxView
+                        AbsoluteLayout.LayoutFlags="All"
+                        AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1">
+                    </BoxView>
+                    <StackLayout>
+                        <Label
+                            FontSize="20"
+                            TextColor="Black"
+                            Text="Page Text Color">
+                        </Label>
+                        <colorpicker:ColorPickerEntry
+                            Color="{DynamicResource NavigationTitleTextColor}"
+                            PropertyChanged="OnPageColorPickerPropertyChanged">
+                        </colorpicker:ColorPickerEntry>
+                    </StackLayout>
+                </AbsoluteLayout>
+
+                <Label WidthRequest="40"></Label>
+
+                <AbsoluteLayout>
+                    <BoxView
+                        AbsoluteLayout.LayoutFlags="All"
+                        AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1">
+                    </BoxView>
+                    <StackLayout>
+                        <Label
+                            FontSize="20"
+                            TextColor="Black"
+                            Text="Button Text Color">
+                        </Label>
+                        <colorpicker:ColorPickerEntry
+                            Color="{DynamicResource NavigationButtonTextColor}"
+                            PropertyChanged="OnButtonColorPickerPropertyChanged">
+                        </colorpicker:ColorPickerEntry>
+                    </StackLayout>
+                </AbsoluteLayout>
+            </StackLayout>
+
+            <Label HeightRequest="20"></Label>
+
+            <StackLayout
+                Orientation="Horizontal">
+                <AbsoluteLayout>
+                    <BoxView
+                        AbsoluteLayout.LayoutFlags="All"
+                        AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1">
+                    </BoxView>
+                    <StackLayout>
+                        <Label
+                            FontSize="20"
+                            TextColor="Black"
+                            Text="Todo List Item Color">
+                        </Label>
+                        <colorpicker:ColorPickerEntry
+                            Color="{DynamicResource MainPageCollectionItemColor}"
+                            PropertyChanged="OnTodoListItemPickerPropertyChanged">
+                        </colorpicker:ColorPickerEntry>
+                    </StackLayout>
+                </AbsoluteLayout>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

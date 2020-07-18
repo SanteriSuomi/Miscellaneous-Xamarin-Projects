@@ -6,10 +6,10 @@
              xmlns:local="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              mc:Ignorable="d"
              x:Class="TodoList.Pages.TodoItemInfoPage"
-             BackgroundColor="Black"
              Title="{Binding Title}">
+    
     <ContentPage.ToolbarItems>
-        <ToolbarItem 
+        <ToolbarItem
             Text="Edit"
             Clicked="OnToolbarEditButtonPressed">
         </ToolbarItem>
@@ -38,14 +38,14 @@
                 <Label
                     TextDecorations="Underline"
                     HorizontalOptions="Center"
-                    TextColor="White"
+                    TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
                     FontSize="18"
                     Text="Notification"
                     x:Name="notificationLabel">
                 </Label>
                 <Label
                     HorizontalOptions="Center"
-                    TextColor="White"
+                    TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
                     FontSize="20"
                     LineBreakMode="TailTruncation"
                     Text="{Binding DateNoTime}"
@@ -53,7 +53,7 @@
                 </Label>
                 <Label
                     HorizontalOptions="Center"
-                    TextColor="White"
+                    TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
                     FontSize="20"
                     LineBreakMode="TailTruncation"
                     Text="{Binding Time}"
@@ -64,7 +64,7 @@
                 AbsoluteLayout.LayoutFlags="All"
                 AbsoluteLayout.LayoutBounds="0.25, 0.42, 0.35, 0.2"
                 HorizontalOptions="Center"
-                TextColor="White"
+                TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
                 FontSize="15"
                 LineBreakMode="TailTruncation"
                 Text="{Binding ImageName}">
@@ -73,7 +73,7 @@
                 AbsoluteLayout.LayoutFlags="All"
                 AbsoluteLayout.LayoutBounds="0.5, 0.85, 0.8, 0.5"
                 IsReadOnly="True"
-                TextColor="White"
+                TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
                 FontSize="20"
                 Text="{Binding Body}">
             </Editor>

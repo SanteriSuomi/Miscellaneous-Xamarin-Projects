@@ -5,20 +5,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="TodoList.Pages.TodoItemCreateEditPage"
-             BackgroundColor="Black"
              NavigationPage.HasNavigationBar="False">
     
     <ContentPage.Content>
         <StackLayout>
             <AbsoluteLayout
                 HeightRequest="62.5"
-                BackgroundColor="DimGray">
+                BackgroundColor="{DynamicResource BarColor}">
                 <Label
                     AbsoluteLayout.LayoutFlags="All"
                     AbsoluteLayout.LayoutBounds="-0.16, 0.5, 0.6, 0.75"
                     HorizontalTextAlignment="Center"
                     FontSize="32.5"
-                    TextColor="White"
+                    TextColor="{DynamicResource NavigationTitleTextColor}"
                     x:Name="titleLabel">
                 </Label>
                 <Button
@@ -26,6 +25,7 @@
                     AbsoluteLayout.LayoutBounds="0.62, 0.5, 0.255, 0.7"
                     CornerRadius="10"
                     FontSize="14"
+                    TextColor="{DynamicResource NavigationButtonTextColor}"
                     Text="Save"
                     Pressed="OnSaveButtonPressed">
                 </Button>
@@ -34,6 +34,7 @@
                     AbsoluteLayout.LayoutBounds="0.985, 0.5, 0.255, 0.7"
                     CornerRadius="10"
                     FontSize="14"
+                    TextColor="{DynamicResource NavigationButtonTextColor}"
                     Text="Back"
                     Pressed="OnBackButtonPressed">
                 </Button>
@@ -42,8 +43,8 @@
                 HorizontalOptions="Center"
                 HeightRequest="52.5"
                 WidthRequest="205"
-                TextColor="White"
-                PlaceholderColor="White"
+                TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
+                PlaceholderColor="{DynamicResource CreateEditPageEntryEditorColor}"
                 Placeholder="Title"
                 FontSize="25"
                 HorizontalTextAlignment="Center"
@@ -60,8 +61,8 @@
                 AbsoluteLayout.LayoutBounds="1, 1, 1, 1"
                 HeightRequest="400"
                 WidthRequest="300"
-                TextColor="White"
-                PlaceholderColor="White"
+                TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
+                PlaceholderColor="{DynamicResource CreateEditPageEntryEditorColor}"
                 Placeholder="                 Body"
                 HorizontalOptions="Center"
                 FontSize="25"
@@ -77,6 +78,7 @@
                     AbsoluteLayout.LayoutFlags="All"
                     AbsoluteLayout.LayoutBounds="0.5, 0, 0.45, 0.25"
                     FontSize="14"
+                    TextColor="{DynamicResource CreateEditPageButtonTextColor}"
                     Text="Choose Image"
                     Clicked="OnChooseImageButtonClicked"
                     x:Name="chooseImageButton">
@@ -86,7 +88,7 @@
                     AbsoluteLayout.LayoutBounds="0.5, 0.275, 0.5, 0.2"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    TextColor="White"
+                    TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
                     FontSize="16"
                     BackgroundColor="Transparent"
                     Clicked="OnImageLabelButtonClicked"
@@ -107,7 +109,7 @@
                     FontAttributes="Bold"
                     HorizontalOptions="Center"
                     Text="Notification"
-                    TextColor="White">
+                    TextColor="{DynamicResource CreateEditPageEntryEditorColor}">
                 </Label>
                 
                 <Label
@@ -117,13 +119,13 @@
                     HorizontalOptions="Center"
                     FontAttributes="Italic"
                     Text=""
-                    TextColor="White"
+                    TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
                     x:Name="datePickerLabel">
                 </Label>
                 <DatePicker
                     AbsoluteLayout.LayoutFlags="All"
                     AbsoluteLayout.LayoutBounds="0.5, 0.85, 0.6, 0.3"
-                    TextColor="White"
+                    TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
                     FontSize="20"
                     Format="dd/MM/yyyy"
                     HorizontalOptions="Center"
@@ -139,13 +141,13 @@
                     HorizontalOptions="Center"
                     FontAttributes="Italic"
                     Text=""
-                    TextColor="White"
+                    TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
                     x:Name="timePickerLabel">
                 </Label>
                 <TimePicker
                     AbsoluteLayout.LayoutFlags="All"
                     AbsoluteLayout.LayoutBounds="0.5, 1.15, 0.6, 0.3"
-                    TextColor="White"
+                    TextColor="{DynamicResource CreateEditPageEntryEditorColor}"
                     FontSize="20"
                     Format="hh:mm"
                     HorizontalOptions="Center"
