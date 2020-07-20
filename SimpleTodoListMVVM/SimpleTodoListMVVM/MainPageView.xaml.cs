@@ -1,6 +1,5 @@
 ﻿using SimpleTodoListMVVM.Extensions;
 using SimpleTodoListMVVM.Utilities;
-using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -28,10 +27,12 @@ namespace SimpleTodoListMVVM
         private async Task OnNewItem(MsgArgs<ObservableCollection<TodoItem>> message)
         {
             await DisplayAlert("New Item", "Add New Item", "Accept", "Cancel");
-            message.Object.Add(new TodoItem()
+            message.Object.Insert(0, new TodoItem()
             {
                 Title = "XDDDD"
             });
+
+            message.CompleteHandler?.Invoke();
         }
 
         private async Task OnDelete(MsgArgs<TodoItem, ObservableCollection<TodoItem>> message)

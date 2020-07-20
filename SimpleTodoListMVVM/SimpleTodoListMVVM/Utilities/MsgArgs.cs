@@ -1,4 +1,6 @@
-﻿namespace SimpleTodoListMVVM.Utilities
+﻿using System;
+
+namespace SimpleTodoListMVVM.Utilities
 {
     /// <summary>
     /// Generic messaging center message arguments.
@@ -8,6 +10,7 @@
     {
         public T Object { get; set; }
         public string Message { get; set; }
+        public Action CompleteHandler { get; set; }
     }
 
     /// <summary>

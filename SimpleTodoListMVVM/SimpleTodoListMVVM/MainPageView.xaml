@@ -6,7 +6,7 @@
              xmlns:converters="clr-namespace:SimpleTodoListMVVM.Converters"
              mc:Ignorable="d"
              x:Class="SimpleTodoListMVVM.MainPageView"
-             Title="{Binding PageTitle}"
+             Title="{Binding PageTitle, Mode=TwoWay}"
              x:Name="MainPageViewRef">
 
     <ContentPage.ToolbarItems>
@@ -20,11 +20,8 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:BoolToColorConverter 
-                x:Key="boolToColor" 
-                TrueObject="ForestGreen"
-                FalseObject="Black"
-                ConvertCondition="True">
+            <converters:BoolToColorConverter
+                x:Key="boolToColor">
             </converters:BoolToColorConverter>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -34,8 +31,23 @@
             <ListView
                 SeparatorVisibility="Default"
                 SeparatorColor="Black"
+                RowHeight="80"
                 SelectedItem="{Binding SelectedItem}"
                 ItemsSource="{Binding Items}">
+                <ListView.Header>
+                    <StackLayout>
+                        <ProgressBar
+                            ProgressColor="Green"
+                            Progress="{Binding CompletedProgress}">
+                        </ProgressBar>
+                        <Label
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            FontSize="20"
+                            Text="{Binding CompletedHeaderText}">
+                        </Label>
+                    </StackLayout>
+                </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -53,15 +65,22 @@
                                 </MenuItem>
                             </ViewCell.ContextActions>
                             
-                            <StackLayout
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center">
-                                <Label
-                                    FontSize="20"
-                                    Text="{Binding Title}"
-                                    TextColor="{Binding IsComplete, Converter={StaticResource boolToColor}}">
-                                </Label>
-                            </StackLayout>
+                            <Frame
+                                CornerRadius="12.5"
+                                HasShadow="True"
+                                IsClippedToBounds="True"
+                                Margin="5"
+                                BackgroundColor="{Binding IsComplete, Converter={StaticResource boolToColor}, ConverterParameter=ForestGreen|LightSkyBlue}">
+                                <StackLayout
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontSize="20"
+                                        Text="{Binding Title}"
+                                        TextColor="{Binding IsComplete, Converter={StaticResource boolToColor}, ConverterParameter=Black|Black}">
+                                    </Label>
+                                </StackLayout>
+                            </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
