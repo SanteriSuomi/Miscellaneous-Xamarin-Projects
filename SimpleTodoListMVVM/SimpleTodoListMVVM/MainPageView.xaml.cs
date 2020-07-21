@@ -29,7 +29,7 @@ namespace SimpleTodoListMVVM
             await DisplayAlert("New Item", "Add New Item", "Accept", "Cancel");
             message.Object.Insert(0, new TodoItem()
             {
-                Title = "XDDDD"
+                Title = $"Item {message.Object.Count}"
             });
 
             message.CompleteHandler?.Invoke();
