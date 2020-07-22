@@ -11,6 +11,7 @@ namespace SimpleTodoListMVVM.Tests
         public void ViewModel_items_get_populated_and_initialized_in_construction_correctly()
         {
             var viewModel = new MainPageViewModel();
+
             Assert.NotNull(viewModel.Items);
         }
 
@@ -26,6 +27,7 @@ namespace SimpleTodoListMVVM.Tests
             var oldCount = viewModel.Items.Count;
             viewModel.OnNewItemCommand.Execute(null);
             var newCount = viewModel.Items.Count;
+
             Assert.Equal(oldCount + 1, newCount);
         }
 
@@ -34,8 +36,10 @@ namespace SimpleTodoListMVVM.Tests
         {
             var viewModel = new MainPageViewModel();
             var item = new TodoItem();
+
             viewModel.Items.Add(item);
             viewModel.OnCompleteCommand.Execute(item);
+
             Assert.True(item.IsComplete);
             Assert.Equal(viewModel.Items[^1], item);
         }
@@ -50,8 +54,10 @@ namespace SimpleTodoListMVVM.Tests
             });
 
             var item = new TodoItem();
+
             viewModel.Items.Add(item);
             viewModel.OnDeleteCommand.Execute(item);
+
             Assert.DoesNotContain(item, viewModel.Items);
         }
     }
