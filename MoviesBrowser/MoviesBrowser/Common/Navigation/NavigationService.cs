@@ -13,9 +13,10 @@ namespace MoviesBrowser.Common.Navigation
         public NavigationService(Lazy<INavigation> navigation)
         {
             _navigation = navigation;
+            PageMap = GetAndRegisterViewAndViewModelTypes();
         }
 
-        public static Dictionary<Type, Type> PageMap { get; } = RegisterViewTypesToViewModelTypes();
+        public Dictionary<Type, Type> PageMap { get; }
 
         private readonly Lazy<INavigation> _navigation;
 
@@ -34,12 +35,8 @@ namespace MoviesBrowser.Common.Navigation
             await _navigation.Value.PopAsync();
         }
 
-        private static Dictionary<Type, Type> RegisterViewTypesToViewModelTypes()
+        private Dictionary<Type, Type> GetAndRegisterViewAndViewModelTypes()
         {
-            // Prevent registering twice.
-            var currentPageMap = PageMap;
-            if (!(PageMap is null)) return currentPageMap;
-
             var assembly = Assembly.GetExecutingAssembly();
             var types = assembly.GetTypes();
 
@@ -59,7 +56,11 @@ namespace MoviesBrowser.Common.Navigation
                 if (!typeName.Contains("viewmodel")
                     && typeName.Contains("view"))
                 {
-                    pageMap[Type.GetType($"{type.FullName}Model")] = type;
+                    var fullType = Type.GetType($"{type.FullName}Model");
+                    if (fullType != null)
+                    {
+                        pageMap[fullType] = type;
+                    }
                 }
             }
 

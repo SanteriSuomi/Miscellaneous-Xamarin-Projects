@@ -4,15 +4,74 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="MoviesBrowser.Modules.MainPage.MainPageView">
+             x:Class="MoviesBrowser.Modules.MainPage.MainPageView"
+             NavigationPage.HasNavigationBar="False">
+    
     <ContentPage.Content>
         <StackLayout>
-            <Label
-                Text="{Binding Title}">
-            </Label>
-            <Button
-                Command="{Binding OnButtonClick, Mode=TwoWay}">
-            </Button>
+            <AbsoluteLayout
+                HeightRequest="60">
+                <BoxView
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1"
+                    Color="DodgerBlue">
+                </BoxView>
+                <BoxView
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.925, 0.8"
+                    CornerRadius="25"
+                    Opacity="0.25"
+                    Color="Black">
+                </BoxView>
+                <SearchBar
+                    x:Name="searchBar"
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1"
+                    Placeholder="Search Movies"
+                    SearchCommand="{Binding SearchCommand}"
+                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}">
+                </SearchBar>
+            </AbsoluteLayout>
+            <CollectionView
+                Margin="0, -6, 0, 0"
+                ItemsSource="{Binding Items, Mode=TwoWay}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <AbsoluteLayout
+                            HeightRequest="357">
+                            <Image
+                                AbsoluteLayout.LayoutFlags="All"
+                                AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1"
+                                Aspect="AspectFill"
+                                Source="{Binding Poster}">
+                            </Image>
+                            <BoxView
+                                CornerRadius="40"
+                                AbsoluteLayout.LayoutFlags="All"
+                                AbsoluteLayout.LayoutBounds="0.5, 0.025, 0.975, 0.15"
+                                Color="DodgerBlue">
+                            </BoxView>
+                            <Label
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                AbsoluteLayout.LayoutFlags="All"
+                                AbsoluteLayout.LayoutBounds="0.5, 0.025, 0.9, 0.15"
+                                FontSize="35"
+                                TextColor="Black"
+                                LineBreakMode="TailTruncation"
+                                Text="{Binding Title}">
+                            </Label>
+                            <Button
+                                AbsoluteLayout.LayoutFlags="All"
+                                AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1"
+                                Opacity="0"
+                                Command="{Binding BindingContext.ItemClickedCommand, Source={x:Reference ItemsListView}}"
+                                CommandParameter="{Binding .}">
+                            </Button>
+                        </AbsoluteLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,10 +1,18 @@
-﻿using System.Threading.Tasks;
-using Xamarin.Forms;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace MoviesBrowser.Modules
 {
-    public abstract class BaseViewModel : BindableObject
+    public abstract class BaseViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
         public virtual Task InitializeAsync(object parameter)
         {
             return Task.CompletedTask;
