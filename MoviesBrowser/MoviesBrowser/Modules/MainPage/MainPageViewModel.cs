@@ -1,9 +1,9 @@
-﻿using MoviesBrowser.Common.Movies;
+﻿using Autofac;
+using MoviesBrowser.Common.Movies;
 using MoviesBrowser.Common.Navigation;
 using MoviesBrowser.Common.Networking;
 using MoviesBrowser.Common.Utilities;
 using MoviesBrowser.Modules.MovieInfoPage;
-using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,6 +14,10 @@ namespace MoviesBrowser.Modules.MainPage
 {
     public class MainPageViewModel : BaseViewModel
     {
+        public MainPageViewModel()
+        {
+        }
+
         public MainPageViewModel(INetworkService networkService, INavigationService navigationService)
         {
             _networkService = networkService;
@@ -49,7 +53,6 @@ namespace MoviesBrowser.Modules.MainPage
 
         private async Task OnItemClicked(Movie movie)
         {
-            Console.WriteLine("SSSS");
             await _navigationService.PushAsync<MovieInfoViewModel>(movie);
         }
     }

@@ -20,7 +20,7 @@ namespace MoviesBrowser.Tests
 
             model.SearchCommand.Execute(new SearchBar(){ Text = "avengers" });
 
-            await Task.Delay(TimeSpan.FromSeconds(0.25));
+            await Task.Delay(TimeSpan.FromSeconds(0.5));
 
             Assert.True(model.Items.Count > 0);
         }
@@ -36,7 +36,7 @@ namespace MoviesBrowser.Tests
             var countBefore = view.Navigation.NavigationStack.Count;
             model.ItemClickedCommand.Execute(new Movie());
 
-            await Task.Delay(TimeSpan.FromSeconds(0.25));
+            await Task.Delay(TimeSpan.FromSeconds(0.5));
 
             var countAfter = view.Navigation.NavigationStack.Count;
 

@@ -43,8 +43,7 @@ namespace MoviesBrowser.Common.Navigation
             var pageMap = new Dictionary<Type, Type>();
             foreach (var type in types)
             {
-                var typeName = type.FullName.ToLowerInvariant();
-                if (typeName.Contains("viewmodel"))
+                if (type.BaseType == typeof(BaseViewModel))
                 {
                     pageMap.Add(type, null);
                 }
@@ -52,15 +51,11 @@ namespace MoviesBrowser.Common.Navigation
 
             foreach (var type in types)
             {
-                var typeName = type.FullName.ToLowerInvariant();
-                if (!typeName.Contains("viewmodel")
-                    && typeName.Contains("view"))
+                if (type.BaseType == typeof(ContentPage)
+                    || type.BaseType == typeof(Page))
                 {
-                    var fullType = Type.GetType($"{type.FullName}Model");
-                    if (fullType != null)
-                    {
-                        pageMap[fullType] = type;
-                    }
+                    var pageViewModel = Type.GetType($"{type.FullName}Model");
+                    pageMap[pageViewModel] = type;
                 }
             }
 
