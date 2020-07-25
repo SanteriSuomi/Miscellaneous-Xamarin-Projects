@@ -1,6 +1,6 @@
 ﻿using Moq;
 using MoviesBrowser.Common.Navigation;
-using MoviesBrowser.Modules.MainPage;
+using MoviesBrowser.Modules.SearchMoviesPage;
 using System;
 using Xamarin.Forms;
 using Xunit;
@@ -14,11 +14,11 @@ namespace MoviesBrowser.Tests
         {
             var navigationMock = new Mock<INavigation>();
             var lazyNavigation = new Lazy<INavigation>(() => navigationMock.Object);
-            var navigationService = new NavigationService(lazyNavigation);
-            var pageMap = navigationService.PageMap;
+            _ = new NavigationService(lazyNavigation);
+            var pageMap = NavigationService.PageMap;
 
-            Assert.True(pageMap.ContainsKey(typeof(MainPageViewModel)) 
-                        && pageMap[typeof(MainPageViewModel)].Equals(typeof(MainPageView)));
+            Assert.True(pageMap.ContainsKey(typeof(SearchMoviesPageViewModel)) 
+                        && pageMap[typeof(SearchMoviesPageViewModel)].Equals(typeof(SearchMoviesPageView)));
         }
     }
 }

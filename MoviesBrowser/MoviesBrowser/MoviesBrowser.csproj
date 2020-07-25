@@ -14,15 +14,28 @@
     <PackageReference Include="Autofac" Version="5.2.0" />
     <PackageReference Include="Moq" Version="4.14.5" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Xamarin.Forms" Version="4.7.0.1142" />
+    <PackageReference Include="Xamarin.Forms" Version="4.7.0.1179" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="Xamarin.Forms.Mocks" Version="4.7.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Modules\MainPage\MainPageView.xaml">
+    <Compile Update="Modules\SearchMoviesPage\SearchMoviesPageView.xaml.cs">
+      <DependentUpon>SearchMoviesPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Modules\RootTabbedPage\RootTabbedPageView.xaml.cs">
+      <DependentUpon>RootTabbedPageView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Modules\SearchMoviesPage\SearchMoviesPageView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Modules\MovieInfoPage\MovieInfoView.xaml">
+    <EmbeddedResource Update="Modules\RootTabbedPage\RootTabbedPageView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Modules\SavedMoviesPage\SavedMoviesPageView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

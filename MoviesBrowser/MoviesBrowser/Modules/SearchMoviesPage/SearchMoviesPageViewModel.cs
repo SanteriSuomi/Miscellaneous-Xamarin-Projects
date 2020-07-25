@@ -1,24 +1,22 @@
-﻿using Autofac;
-using MoviesBrowser.Common.Movies;
+﻿using MoviesBrowser.Common.Movies;
 using MoviesBrowser.Common.Navigation;
 using MoviesBrowser.Common.Networking;
 using MoviesBrowser.Common.Utilities;
-using MoviesBrowser.Modules.MovieInfoPage;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TodoList.Extensions;
 using Xamarin.Forms;
 
-namespace MoviesBrowser.Modules.MainPage
+namespace MoviesBrowser.Modules.SearchMoviesPage
 {
-    public class MainPageViewModel : BaseViewModel
+    public class SearchMoviesPageViewModel : BaseViewModel
     {
-        public MainPageViewModel()
+        public SearchMoviesPageViewModel()
         {
         }
 
-        public MainPageViewModel(INetworkService networkService, INavigationService navigationService)
+        public SearchMoviesPageViewModel(INetworkService networkService, INavigationService navigationService)
         {
             _networkService = networkService;
             _navigationService = navigationService;
@@ -29,6 +27,7 @@ namespace MoviesBrowser.Modules.MainPage
         private readonly INetworkService _networkService;
         private readonly INavigationService _navigationService;
 
+        private static readonly ObservableCollection<Movie> _emptyItems = new ObservableCollection<Movie>();
         private ObservableCollection<Movie> _items;
         public ObservableCollection<Movie> Items
         {
@@ -37,6 +36,17 @@ namespace MoviesBrowser.Modules.MainPage
             {
                 _items = value;
                 OnPropertyChanged();
+            }
+        }
+
+        private string _searchbarText;
+        public string SearchbarText
+        {
+            get => _searchbarText;
+            set
+            {
+                _searchbarText = value;
+                OnSearchbarTextChanged(value);
             }
         }
 
@@ -53,7 +63,15 @@ namespace MoviesBrowser.Modules.MainPage
 
         private async Task OnItemClicked(Movie movie)
         {
-            await _navigationService.PushAsync<MovieInfoViewModel>(movie);
+            //await _navigationService.PushAsync<MovieInfoViewModel>(movie);
+        }
+
+        private void OnSearchbarTextChanged(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                Items = _emptyItems;
+            }
         }
     }
 }

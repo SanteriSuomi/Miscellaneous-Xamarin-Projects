@@ -1,46 +1,72 @@
-﻿using MoviesBrowser.Common.Movies;
+﻿using Autofac;
+using MoviesBrowser.Common.Movies;
 using MoviesBrowser.Common.Navigation;
 using MoviesBrowser.Common.Networking;
-using MoviesBrowser.Modules.MainPage;
+using MoviesBrowser.Modules.SearchMoviesPage;
+using MoviesBrowser.Modules.SavedMoviesPage;
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Forms.Mocks;
 using Xunit;
 
 namespace MoviesBrowser.Tests
 {
     public class MainPageViewModelTests
     {
+        private SearchMoviesPageViewModel _model;
+        private Lazy<INavigation> _lazyNavigation;
+        private NavigationPage _navigationPage;
+
         [Fact]
         public async Task SearchCommand_is_executed_correctly_and_items_get_populated()
         {
-            var tempNavigation = new MainPageView(null);
-            var lazyNavigation = new Lazy<INavigation>(tempNavigation.Navigation);
-            var model = new MainPageViewModel(new NetworkService(), new NavigationService(lazyNavigation));
+            _navigationPage = new NavigationPage();
+            _lazyNavigation = new Lazy<INavigation>(_navigationPage.Navigation);
+            _model = new SearchMoviesPageViewModel(new NetworkService(), new NavigationService(_lazyNavigation));
 
-            model.SearchCommand.Execute(new SearchBar(){ Text = "avengers" });
+            _model.SearchCommand.Execute("mortdecai");
 
             await Task.Delay(TimeSpan.FromSeconds(0.5));
 
-            Assert.True(model.Items.Count > 0);
+            Assert.True(_model.Items.Count > 0);
         }
 
         [Fact]
-        public async Task ItemClickedCommand_is_executed_correctly_and_navigation_works()
+        public async Task MainPage_navigation_works()
         {
-            var tempNavigation = new MainPageView(null);
-            var lazyNavigation = new Lazy<INavigation>(tempNavigation.Navigation);
-            var model = new MainPageViewModel(new NetworkService(), new NavigationService(lazyNavigation));
-            var view = new MainPageView(model);
+            MockForms.Init();
 
-            var countBefore = view.Navigation.NavigationStack.Count;
-            model.ItemClickedCommand.Execute(new Movie());
+            _navigationPage = new NavigationPage();
+            _lazyNavigation = new Lazy<INavigation>(() => _navigationPage.Navigation);
+            var app = Application.Current = new App();
+            app.MainPage = _navigationPage;
 
-            await Task.Delay(TimeSpan.FromSeconds(0.5));
+            var mainPage = App.Container.Resolve<SearchMoviesPageView>();
+            await _navigationPage.PushAsync(mainPage);
+            var movieInfoPage = App.Container.Resolve<SavedMoviesPageView>();
+            await _navigationPage.Navigation.PushAsync(movieInfoPage);
 
-            var countAfter = view.Navigation.NavigationStack.Count;
+            Assert.Equal(2, _navigationPage.Navigation.NavigationStack.Count);
+        }
 
-            Assert.True(countAfter == countBefore + 1);
+        [Fact]
+        public void SearchbarText_when_empty_or_null_resets_list()
+        {
+            _model = new SearchMoviesPageViewModel
+            {
+                SearchbarText = "placeholder",
+                Items = new ObservableCollection<Movie>()
+                {
+                    new Movie(),
+                    new Movie()
+                }
+            };
+
+            _model.SearchbarText = string.Empty;
+
+            Assert.True(_model.Items.Count == 0);
         }
     }
 }

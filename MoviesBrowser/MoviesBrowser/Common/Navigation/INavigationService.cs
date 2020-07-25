@@ -5,7 +5,7 @@ namespace MoviesBrowser.Common.Navigation
 {
     public interface INavigationService
     {
-        Task PushAsync<TViewModel>(object parameter = null) where TViewModel : BaseViewModel;
+        Task<bool> PushAsync<TViewModel>(object parameter = null) where TViewModel : BaseViewModel;
         Task PopAsync();
     }
 }

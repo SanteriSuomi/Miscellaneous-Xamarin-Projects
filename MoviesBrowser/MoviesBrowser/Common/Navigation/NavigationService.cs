@@ -13,21 +13,26 @@ namespace MoviesBrowser.Common.Navigation
         public NavigationService(Lazy<INavigation> navigation)
         {
             _navigation = navigation;
-            PageMap = GetAndRegisterViewAndViewModelTypes();
         }
 
-        public Dictionary<Type, Type> PageMap { get; }
+        public static Dictionary<Type, Type> PageMap { get; } = GetAndRegisterViewsToViewModels();
 
         private readonly Lazy<INavigation> _navigation;
 
-        public async Task PushAsync<TViewModel>(object parameter = null) where TViewModel : BaseViewModel
+        public async Task<bool> PushAsync<TViewModel>(object parameter = null) where TViewModel : BaseViewModel
         {
             var pageType = PageMap[typeof(TViewModel)];
-            var page = App.Container.Resolve(pageType) as Page;
-            await _navigation.Value.PushAsync(page);
+            var resolvedPage = App.Container.Resolve(pageType);
+            if (resolvedPage is Page page)
+            {
+                await _navigation.Value.PushAsync(page);
 
-            var baseView = page.BindingContext as BaseViewModel;
-            await baseView.InitializeAsync(parameter);
+                var baseView = page.BindingContext as BaseViewModel;
+                await baseView.InitializeAsync(parameter);
+                return true;
+            }
+
+            return false;
         }
 
         public async Task PopAsync()
@@ -35,9 +40,13 @@ namespace MoviesBrowser.Common.Navigation
             await _navigation.Value.PopAsync();
         }
 
-        private Dictionary<Type, Type> GetAndRegisterViewAndViewModelTypes()
+        /// <summary>
+        /// Registers all view types to viewmodel types.
+        /// </summary>
+        /// <returns>Dictionary where the key is viewmodel and value is view.</returns>
+        private static Dictionary<Type, Type> GetAndRegisterViewsToViewModels()
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetCallingAssembly();
             var types = assembly.GetTypes();
 
             var pageMap = new Dictionary<Type, Type>();
@@ -52,6 +61,7 @@ namespace MoviesBrowser.Common.Navigation
             foreach (var type in types)
             {
                 if (type.BaseType == typeof(ContentPage)
+                    || type.BaseType == typeof(TabbedPage)
                     || type.BaseType == typeof(Page))
                 {
                     var pageViewModel = Type.GetType($"{type.FullName}Model");

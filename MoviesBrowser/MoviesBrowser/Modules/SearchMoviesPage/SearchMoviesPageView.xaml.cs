@@ -1,12 +1,12 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MoviesBrowser.Modules.MainPage
+namespace MoviesBrowser.Modules.SearchMoviesPage
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPageView : ContentPage
+    public partial class SearchMoviesPageView : ContentPage
     {
-        public MainPageView(MainPageViewModel viewModel)
+        public SearchMoviesPageView(SearchMoviesPageViewModel viewModel)
         {
             InitializeComponent();
             BindingContext = viewModel;

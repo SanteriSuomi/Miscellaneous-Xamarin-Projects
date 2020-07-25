@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:MoviesBrowser.Modules.SearchMoviesPage"
+             mc:Ignorable="d"
+             x:Class="MoviesBrowser.Modules.SearchMoviesPage.SearchMoviesPageView"
+             NavigationPage.HasNavigationBar="False"
+             x:Name="contentPage"
+             Title="Search"
+             IconImageSource="search.png">
+
+    <ContentPage.BindingContext>
+        <local:SearchMoviesPageViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <AbsoluteLayout
+                HeightRequest="60">
+                <BoxView
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1"
+                    Color="DodgerBlue">
+                </BoxView>
+                <BoxView
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.95, 0.8"
+                    CornerRadius="25"
+                    Opacity="0.25"
+                    Color="Black">
+                </BoxView>
+                <SearchBar
+                    x:Name="searchBar"
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1"
+                    Placeholder="Search Movies"
+                    Text="{Binding SearchbarText, Mode=TwoWay}"
+                    SearchCommand="{Binding SearchCommand}"
+                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}">
+                </SearchBar>
+            </AbsoluteLayout>
+            <CollectionView
+                Margin="25, -6, 25, 0"
+                ItemsSource="{Binding Items, Mode=TwoWay}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame
+                            HeightRequest="294.5"
+                            CornerRadius="30"
+                            HasShadow="True">
+                            <AbsoluteLayout
+                                HeightRequest="357">
+                                <Image
+                                    AbsoluteLayout.LayoutFlags="All"
+                                    AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1"
+                                    Aspect="AspectFill"
+                                    Source="{Binding PlaceholderPoster}">
+                                </Image>
+                                <Image
+                                    AbsoluteLayout.LayoutFlags="All"
+                                    AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1"
+                                    Aspect="AspectFill"
+                                    Source="{Binding Poster}">
+                                </Image>
+                                <BoxView
+                                    CornerRadius="40"
+                                    AbsoluteLayout.LayoutFlags="All"
+                                    AbsoluteLayout.LayoutBounds="0.5, 0.025, 0.8, 0.15"
+                                    Color="DodgerBlue"
+                                    Opacity="0.75">
+                                </BoxView>
+                                <Label
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="Center"
+                                    AbsoluteLayout.LayoutFlags="All"
+                                    AbsoluteLayout.LayoutBounds="0.5, 0.025, 0.75, 0.15"
+                                    FontSize="27.5"
+                                    TextColor="White"
+                                    LineBreakMode="TailTruncation"
+                                    Text="{Binding Title}">
+                                </Label>
+                                <Button
+                                    AbsoluteLayout.LayoutFlags="All"
+                                    AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1"
+                                    Opacity="0"
+                                    Command="{Binding BindingContext.ItemClickedCommand, Source={x:Reference contentPage}}"
+                                    CommandParameter="{Binding .}">
+                                </Button>
+                            </AbsoluteLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,12 +1,12 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MoviesBrowser.Modules.MovieInfoPage
+namespace MoviesBrowser.Modules.SavedMoviesPage
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MovieInfoView : ContentPage
+    public partial class SavedMoviesPageView : ContentPage
     {
-        public MovieInfoView(MovieInfoViewModel viewModel)
+        public SavedMoviesPageView(SavedMoviesPageViewModel viewModel)
         {
             InitializeComponent();
             BindingContext = viewModel;

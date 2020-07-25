@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using MoviesBrowser.Common.Navigation;
-using MoviesBrowser.Modules.MainPage;
+using MoviesBrowser.Modules.RootTabbedPage;
 using System;
 using Xamarin.Forms;
 
@@ -32,7 +32,7 @@ namespace MoviesBrowser
         protected override async void OnStart()
         {
             MainPage = _navigationPage;
-            await _navigationPage.PushAsync(Container.Resolve<MainPageView>());
+            await _navigationPage.PushAsync(Container.Resolve<RootTabbedPageView>());
         }
 
         protected override void OnSleep()
