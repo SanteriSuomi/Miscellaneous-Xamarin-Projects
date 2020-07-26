@@ -20,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Modules\MovieInfoPage\MovieInfoPageView.xaml.cs">
+      <DependentUpon>MovieInfoPageView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Modules\SearchMoviesPage\SearchMoviesPageView.xaml.cs">
       <DependentUpon>SearchMoviesPageView.xaml</DependentUpon>
     </Compile>
@@ -29,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Modules\MovieInfoPage\MovieInfoPageView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Modules\SearchMoviesPage\SearchMoviesPageView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

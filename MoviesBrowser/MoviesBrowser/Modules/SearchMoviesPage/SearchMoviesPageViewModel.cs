@@ -2,6 +2,7 @@
 using MoviesBrowser.Common.Navigation;
 using MoviesBrowser.Common.Networking;
 using MoviesBrowser.Common.Utilities;
+using MoviesBrowser.Modules.MovieInfoPage;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -63,7 +64,7 @@ namespace MoviesBrowser.Modules.SearchMoviesPage
 
         private async Task OnItemClicked(Movie movie)
         {
-            //await _navigationService.PushAsync<MovieInfoViewModel>(movie);
+            await _navigationService.PushAsync<MovieInfoPageViewModel>(movie);
         }
 
         private void OnSearchbarTextChanged(string text)

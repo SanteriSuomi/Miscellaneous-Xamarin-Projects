@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:MoviesBrowser.Common.Converters"
+             mc:Ignorable="d"
+             x:Class="MoviesBrowser.Modules.MovieInfoPage.MovieInfoPageView"
+             Title="{Binding Movie.Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToFavouriteIconConverter x:Key="boolToIcon" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView
+            VerticalOptions="StartAndExpand"
+            BackgroundColor="White">
+            <StackLayout>
+                <AbsoluteLayout>
+                    <Image
+                        AbsoluteLayout.LayoutFlags="All"
+                        AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1"
+                        HeightRequest="350"
+                        Aspect="AspectFill"
+                        Source="{Binding Movie.Poster}">
+                    </Image>
+                    <ImageButton
+                        BackgroundColor="Transparent"
+                        AbsoluteLayout.LayoutFlags="PositionProportional"
+                        AbsoluteLayout.LayoutBounds="0.98, 0.98, 65, 65"
+                        Command="{Binding FavouriteClickCommand}"
+                        Source="{Binding FavouriteIconState, Converter={StaticResource boolToIcon}}"
+                        Clicked="OnFavouriteIconClicked">
+                    </ImageButton>
+                </AbsoluteLayout>
+                <StackLayout
+                    Padding="10, 0, 0, 0"
+                    Orientation="Horizontal">
+                    <Label
+                        WidthRequest="300"
+                        HorizontalTextAlignment="Center"
+                        FontSize="26"
+                        TextColor="Black"
+                        LineBreakMode="TailTruncation"
+                        Text="{Binding Movie.Title}">
+                    </Label>
+                    <Label
+                        Padding="10, 0, 0, 0"
+                        HorizontalTextAlignment="Center"
+                        FontSize="26"
+                        TextColor="DarkGoldenrod"
+                        LineBreakMode="TailTruncation"
+                        Text="{Binding Movie.Year}">
+                    </Label>
+                </StackLayout>
+                <BoxView 
+                    HeightRequest="2"
+                    BackgroundColor="Black">
+                </BoxView>
+                <Expander>
+                    <Expander.Header>
+                        <Label 
+                            Padding="10, 2.5, 0, 0"
+                            TextColor="Black"
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Plot (Click To Expand)">
+                        </Label>
+                    </Expander.Header>
+                    <Label
+                        Padding="10, 2.5, 0, 0"
+                        BackgroundColor="Bisque"
+                        HeightRequest="200"
+                        HorizontalTextAlignment="Start"
+                        FontSize="20"
+                        TextColor="Black"
+                        Text="{Binding Movie.Plot}">
+                    </Label>
+                </Expander>
+                <Expander>
+                    <Expander.Header>
+                        <Label 
+                            Padding="10, 2.5, 0, 0"
+                            TextColor="Black"
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Cast (Click To Expand)">
+                        </Label>
+                    </Expander.Header>
+                    <Label
+                        Padding="10, 2.5, 0, 0"
+                        BackgroundColor="Bisque"
+                        HeightRequest="200"
+                        HorizontalTextAlignment="Start"
+                        FontSize="20"
+                        TextColor="Black"
+                        Text="{Binding Movie.Actors}">
+                    </Label>
+                </Expander>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -19,14 +19,13 @@ namespace MoviesBrowser.Common.Navigation
 
         private readonly Lazy<INavigation> _navigation;
 
-        public async Task<bool> PushAsync<TViewModel>(object parameter = null) where TViewModel : BaseViewModel
+        public async Task<bool> PushAsync<TViewModel>(object parameter = null, bool animated = true) where TViewModel : BaseViewModel
         {
             var pageType = PageMap[typeof(TViewModel)];
             var resolvedPage = App.Container.Resolve(pageType);
             if (resolvedPage is Page page)
             {
-                await _navigation.Value.PushAsync(page);
-
+                await _navigation.Value.PushAsync(page, animated);
                 var baseView = page.BindingContext as BaseViewModel;
                 await baseView.InitializeAsync(parameter);
                 return true;
