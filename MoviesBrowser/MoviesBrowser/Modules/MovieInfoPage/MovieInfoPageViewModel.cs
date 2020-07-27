@@ -1,23 +1,44 @@
-﻿using MoviesBrowser.Common.Movies;
+﻿using Autofac;
+using MoviesBrowser.Common.Database;
+using MoviesBrowser.Common.Movies;
 using MoviesBrowser.Common.Networking;
 using MoviesBrowser.Common.Utilities;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TodoList.Extensions;
 using Xamarin.Forms;
 
 namespace MoviesBrowser.Modules.MovieInfoPage
 {
     public class MovieInfoPageViewModel : BaseViewModel
     {
-        public MovieInfoPageViewModel(INetworkService networkService)
+        public MovieInfoPageViewModel(INetworkService networkService, IRepository<ImdbMovie> repository)
         {
             _networkService = networkService;
-            FavouriteClickCommand = new Command(OnFavouriteClick);
+            _repository = repository;
+            _repository = App.Container.Resolve<IRepository<ImdbMovie>>();
+            FavouriteClickCommand = new Command<ImdbMovie>((m) =>
+            {
+                OnFavouriteClick(m).SafeFireAndForget(false);
+            });
         }
 
         public override async Task InitializeAsync(object parameter)
         {
-            Movie movie = parameter as Movie;
+            var movie = parameter as Movie;
+            var allMovies = await _repository.GetAllAsync();
+            if (allMovies != null && allMovies.Count > 0)
+            {
+                var imdbMovie = allMovies.FirstOrDefault(m => m.imdbID == movie.imdbID);
+                if (imdbMovie != null)
+                {
+                    Movie = imdbMovie;
+                    FavouriteIconState = imdbMovie.IsFavourite;
+                    return;
+                }
+            }
+
             Movie = await _networkService.GetAsync<ImdbMovie>(MovieUtils.GetUri("i", movie.imdbID));
         }
 
@@ -46,10 +67,20 @@ namespace MoviesBrowser.Modules.MovieInfoPage
         public ICommand FavouriteClickCommand { get; set; }
 
         private readonly INetworkService _networkService;
+        private readonly IRepository<ImdbMovie> _repository;
 
-        private void OnFavouriteClick()
+        private async Task OnFavouriteClick(ImdbMovie movie)
         {
             FavouriteIconState = !FavouriteIconState;
+            movie.IsFavourite = FavouriteIconState;
+            if (FavouriteIconState)
+            {
+                await _repository.SaveAsync(movie);
+            }
+            else
+            {
+                await _repository.DeleteAsync(movie);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using MoviesBrowser.Common.Database;
 using MoviesBrowser.Common.Navigation;
 using MoviesBrowser.Modules.RootTabbedPage;
 using System;
@@ -25,6 +26,11 @@ namespace MoviesBrowser
             builder.RegisterType<NavigationService>()
                    .As<INavigationService>()
                    .WithParameter("navigation", lazyNavigation);
+
+            builder.RegisterGeneric(typeof(Repository<>))
+                   .As(typeof(IRepository<>))
+                   .WithParameter("path", DatabaseConstants.Path)
+                   .WithParameter("flags", DatabaseConstants.Flags);
 
             Container = builder.Build();
         }

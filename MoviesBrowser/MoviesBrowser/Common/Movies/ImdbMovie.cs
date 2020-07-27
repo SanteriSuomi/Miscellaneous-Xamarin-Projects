@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using MoviesBrowser.Common.Database;
+using SQLite;
+using System.Collections.Generic;
 
 namespace MoviesBrowser.Common.Movies
 {
-    public class ImdbMovie
+    public class ImdbMovie : IDatabaseItem
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+        public bool IsFavourite { get; set; }
+
         public string Title { get; set; }
         public string Year { get; set; }
         public string Rated { get; set; }
@@ -18,6 +24,7 @@ namespace MoviesBrowser.Common.Movies
         public string Country { get; set; }
         public string Awards { get; set; }
         public string Poster { get; set; }
+        [Ignore]
         public List<Rating> Ratings { get; set; }
         public string Metascore { get; set; }
         #pragma warning disable IDE1006 // Naming Styles

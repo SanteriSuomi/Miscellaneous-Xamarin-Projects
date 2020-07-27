@@ -19,10 +19,7 @@ namespace TodoList.Extensions
             }
             catch (Exception e)
             {
-                if (!(errorHandler is null))
-                {
-                    errorHandler?.Invoke(e);
-                }
+                errorHandler?.Invoke(e);
             }
         }
 
@@ -42,10 +39,7 @@ namespace TodoList.Extensions
             }
             catch (Exception e)
             {
-                if (!(errorHandler is null))
-                {
-                    errorHandler?.Invoke(e);
-                }
+                errorHandler?.Invoke(e);
             }
 
             return default;

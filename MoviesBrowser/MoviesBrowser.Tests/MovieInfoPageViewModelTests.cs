@@ -1,4 +1,5 @@
-﻿using MoviesBrowser.Common.Movies;
+﻿using MoviesBrowser.Common.Database;
+using MoviesBrowser.Common.Movies;
 using MoviesBrowser.Common.Networking;
 using MoviesBrowser.Modules.MovieInfoPage;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace MoviesBrowser.Tests
         [Fact]
         public async Task InitializeAsync_passes_movie_parameter_correctly_and_gets_imdb_movie_data_through_network_service()
         {
-            var model = new MovieInfoPageViewModel(new NetworkService());
+            var model = new MovieInfoPageViewModel(new NetworkService(), new Repository<ImdbMovie>());
 
             await model.InitializeAsync(new Movie()
             {
